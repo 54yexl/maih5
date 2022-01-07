@@ -7,7 +7,7 @@
   <div class="middle">
     <div class="card">
       <div class="top">
-        <img src="@/assets/user_friend.png"/>
+        <img src="@/assets/user/avatar.png"/>
         <div class="top-txt">
           <h4>名字</h4>
           <p>ID：555</p>
@@ -33,7 +33,7 @@
     <div class="card tool">
       <h1>主要工具</h1>
       <van-grid :column-num="5" :border="false">
-        <van-grid-item icon="orders-o" text="订单" icon-color="#F12D48"/>
+        <van-grid-item icon="orders-o" text="订单" icon-color="#F12D48" to="/home/order"/>
         <van-grid-item icon="friends-o" text="我的好友" icon-color="#FFD252"/>
         <van-grid-item icon="share-o" text="分享朋友" icon-color="#fc3251"/>
         <van-grid-item icon="balance-list-o" text="收益" icon-color="#FFCD49"/>
@@ -47,8 +47,8 @@
       <h1>常用工具</h1>
       <van-grid :column-num="4" :border="false">
         <van-grid-item icon="new" text="新手教程" icon-color="#745AFF"/>
-        <van-grid-item icon="gold-coin" text="收款绑定" icon-color="#FFCD49"/>
-        <van-grid-item icon="manager" text="绑定账号" icon-color="#F0BD84"/>
+        <van-grid-item icon="gold-coin" text="收款绑定" icon-color="#FFCD49" to="/collect/bind"/>
+        <van-grid-item icon="manager" text="绑定账号" icon-color="#F0BD84" to="/account/bind"/>
         <van-grid-item icon="phone-circle" text="帮助与客服" icon-color="#F12D48"/>
         <van-grid-item icon="setting" text="设置" icon-color="#F77A85"/>
       </van-grid>

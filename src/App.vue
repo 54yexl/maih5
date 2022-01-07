@@ -18,7 +18,7 @@ export default {
       tabActiveTextColor: '#DE424E',
       tabsBottomBarColor: '#DE424E',
       dividerBorderColor: '#EBEBEB',
-      buttonBorderRadius: '10px',
+      buttonBorderRadius: '5px',
       borderRadiusMax: '10px',
       ActionBarHeight: '66px',
       ActionBarButtonHeight: '48px',

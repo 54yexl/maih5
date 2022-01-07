@@ -2,7 +2,7 @@
   <!-- 常规登录 -->
   <div class="content">
     <h2>手机快捷登录</h2>
-    <p>请输入您的手机号码登录账户，短信验证码5分钟内输入有效</p>
+    <p>请输入您的手机号码登录账户，图形验证码5分钟内输入有效</p>
     <van-form label-width="4.4em" @submit="onSubmit">
       <van-field
         v-model="form.mobile"
@@ -97,6 +97,7 @@ const onSubmit = async () => {
   .van-row a{
     margin: 50px 0 0;
     font-size: 30px;
+    display: block;
     color: red!important;
   }
 }

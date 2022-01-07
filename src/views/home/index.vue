@@ -59,13 +59,13 @@ const tabList = [
     key: '1',
     title: '待操作',
     icon: `photo-o`,
-    url: '/'
+    url: '/home/order'
   },
   {
     key: '2',
     title: '待返款',
     icon: `photo-o`,
-    url: '/'
+    url: '/home/order'
   },
   {
     key: '3',
@@ -95,7 +95,7 @@ const tabList = [
     key: '7',
     title: '收款账户',
     icon: `photo-o`,
-    url: '/'
+    url: '/collect/bind'
   },
   {
     key: '8',

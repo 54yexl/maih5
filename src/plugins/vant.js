@@ -39,7 +39,8 @@ import {
   Step,
   RadioGroup,
   Radio,
-  Row, Col
+  Row, Col,
+  Uploader
 } from "vant";
 
 const plugins = [
@@ -82,7 +83,8 @@ const plugins = [
   Step,
   RadioGroup,
   Radio,
-  Row, Col
+  Row, Col,
+  Uploader
 ];
 
 export const vantPlugins = {
