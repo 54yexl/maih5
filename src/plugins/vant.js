@@ -40,8 +40,10 @@ import {
   RadioGroup,
   Radio,
   Row, Col,
+  Switch, 
   Uploader
 } from "vant";
+import maiUpload from '@/components/maiUpload/index.vue'
 
 const plugins = [
   Button,
@@ -84,7 +86,9 @@ const plugins = [
   RadioGroup,
   Radio,
   Row, Col,
-  Uploader
+  Uploader,
+  Switch, 
+  maiUpload
 ];
 
 export const vantPlugins = {

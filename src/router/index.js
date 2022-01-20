@@ -18,7 +18,7 @@ export const routes = [
   {
     path: '/',
     name: 'Layout',
-    redirect: '/user/login',
+    redirect: '/home',
     component: () => import('@/layout/index.vue'),
     meta: {
       title: '首页'

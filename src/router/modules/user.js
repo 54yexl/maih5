@@ -18,6 +18,16 @@ const routes = [
     path: '/user/forgotPassword',
     name: 'ForgotPassword',
     component: () => import('@/views/user/forgotPassword.vue')
+  },
+  {
+    path: '/user/modyPassword',
+    name: 'ModyPassword',
+    component: () => import('@/views/user/modyPassword.vue')
+  },
+  {
+    path: '/user/set',
+    name: 'Set',
+    component: () => import('@/views/user/set.vue')
   }
 ]
 export default routes

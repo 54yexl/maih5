@@ -14,8 +14,7 @@ export function removeCookie(key) {
 
 export function logout() {
   return new Promise((resolve) => {
-    removeCookie('accessToken')
-    removeCookie('storeId')
+    removeCookie('accountInfo')
     resolve()
   })
 }

@@ -10,7 +10,7 @@
     <h2>*为了方便您的上下级联系到您，请输入您的微信号 。</h2>
     <van-form label-width="6em" @submit="onSubmit">
       <van-field
-        v-model="form.captcha"
+        v-model="form.weChat"
         placeholder="请输入您的微信号"
         label="微信号"
         input-align="right"
@@ -22,7 +22,7 @@
         :rules="[{ required: true, message: '请上传微信收款码' }]"
       >
         <template #input>
-          <van-uploader v-model="form.uploader" :max-count="1" />
+          <maiUpload v-model="form.collectCode" :max-count="1"/>
         </template>
       </van-field>
       <div class="sub">
@@ -40,21 +40,31 @@
   </div>
 </template>
 <script setup>
-import { sendCaptcha, login } from '@/api/user'
-import { reactive, ref } from 'vue'
+import { getWechatApi, setWechatApi } from '@/api/user'
+import { onBeforeMount, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const validatorPhone = val => /^1[3|4|5|6|7|8][0-9]{9}$/.test(val)
 const router = useRouter()
-
 const loading = ref(false)
-const form = reactive({
-  uploader: [{ url: 'https://img01.yzcdn.cn/vant/leaf.jpg' }]
+
+const form = ref({
+  alipayAccount: undefined,
+  alipayCode: undefined // 收款码
 })
 
+onBeforeMount(async () => {
+  const { data } = await getWechatApi()
+  if (data) {
+    form.value = data
+  }
+})
 const onSubmit = async () => {
   loading.value = true
-  // const { data } = await login(form)
+  const data = form.value
+  await setWechatApi(data).finally(() => {
+    loading.value = false
+  })
   router.push({ path: '/collect/bind' })
 }
 </script>

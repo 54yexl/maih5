@@ -1,16 +1,17 @@
 <template>
   <van-nav-bar
-    title="任务列表"
+    title="我的好友"
     left-arrow
     fixed
     placeholder
-    @clickLeft="() => router.go(-1)"
+    @clickLeft="() => router.push('/user/personal')"
   />
   <van-tabs
     v-model:active="state.activeTab"
     sticky
     :offset-top="46"
     @click-tab="onClickTab"
+    color="rgb(242, 145, 0)"
   >
     <van-tab
       v-for="item in tabList"
@@ -24,95 +25,79 @@
         finished-text="没有更多了"
         @load="loadData"
       >
-        <div
-          class="item"
-          v-for="item in state.list"
-          :key="item.cardOrderId"
-          @click="
-            router.replace({
-              path: `/home/order/detail`,
-              query: { id: item?.id }
-            })
-          "
-        >
+        <div class="item" v-for="item in state.list" :key="item.cardOrderId">
           <div class="goods">
-            <van-image :src="item.goodsPic" :width="85" :height="85" />
+            <van-image
+              src="http://t.haidaitest.top:555/m/static/img/tudiuser2.1934d30b.png"
+              :width="40"
+              :height="40"
+            />
             <div class="goods-name">
               <div class="price">
-                <div>任务ID：{{ item.id }}</div>
-                <div class="num" style="color: #999">2021-12-31 14:39:43</div>
-              </div>
-              <div class="price">
-                <div>佣金：{{ item.commission }}</div>
-                <div class="num">
-                  <van-button type="primary" size="mini">{{
-                    item.statusStr
-                  }}</van-button>
+                <div>昵称：{{ item.nikeName || '无' }}</div>
+                <div class="num active">
+                  {{ item.status === 1 ? '已实名' : '未实名' }}
                 </div>
               </div>
-              <div class="price">
-                <div>垫付：{{ item.goodsPrice }}</div>
-                <div class="num">账号：{{ item.id }}</div>
+              <div class="price" style="padding: 10px 0">
+                <div>电话：{{ item.phone || '无' }}</div>
+                <div class="num">正常</div>
               </div>
-              <div class="last">{{ item.returnTypeStr }}</div>
+              <div class="price">
+                <!-- <div>完成任务数：0</div> -->
+                <div
+                  class="num"
+                  @click="(state.show = true), (state.showDetail = item)"
+                >
+                  详情
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </van-list>
     </van-tab>
   </van-tabs>
+  <van-popup v-model:show="state.show" :style="{ width: '77%' }">
+    <van-cell-group>
+      <van-cell title="ID" :value="state.showDetail?.userId" />
+      <van-cell title="手机" :value="state.showDetail.phone" />
+      <van-cell title="QQ" :value="state.showDetail.qq" />
+      <van-cell title="微信" :value="state.showDetail.weChat" />
+      <!-- <van-cell title="累积做单量" value="0" />
+      <van-cell title="累计收益" value="￥1.52" /> -->
+      <van-cell title="注册时间" :value="state.showDetail.createTime" />
+    </van-cell-group>
+  </van-popup>
 </template>
 <script setup>
-// import moment from 'moment'
+import moment from 'moment'
 import { useRouter } from 'vue-router'
 import { reactive } from 'vue'
-import { orderListApi } from '@/api/home'
+import { friendsListApi } from '@/api/home'
 const router = useRouter()
 const state = reactive({
-  activeTab: 0,
+  activeTab: 1,
   loading: false,
   finished: false,
   list: [],
   page: 0,
-  pageSize: 10
+  pageSize: 10,
+  show: false,
+  showDetail: {}
 })
-// 0.全部 1.待审核 2.待操作 3.待返款 4.待好评 5.待确认 6.待追评 7.预售订单 10.已完成
 const tabList = [
+  // {
+  //   label: '全部',
+  //   key: 0
+  // },
   {
-    label: '全部',
-    key: 0
-  },
-  {
-    label: '待审核',
+    label: '已实名',
     key: 1
   },
   {
-    label: '待操作',
-    key: 2
-  },
-  {
-    label: '待返款',
-    key: 3
-  },
-  {
-    label: '待好评',
-    key: 4
-  },
-  {
-    label: '待确认',
-    key: 5
-  },
-  {
-    label: '待追评',
-    key: 6
-  },
-  {
-    label: '预售订单',
-    key: 7
-  },
-  {
-    label: '已完成',
-    key: 10
+    label: '未实名',
+    key: 0
   }
 ]
 const onClickTab = ({ name }) => {
@@ -127,7 +112,7 @@ const loadData = async init => {
       (state.page = 1),
       (state.pageSize = 10),
       (state.loading = false))
-  const { data } = await orderListApi({
+  const { data } = await friendsListApi({
     page: state.page,
     pageSize: state.pageSize,
     status: state.activeTab
@@ -141,13 +126,13 @@ const loadData = async init => {
   state.finished = true
   // setTimeout(() => {
   //   for (let i = 0; i < 10; i++) {
-  //     state.list.push(state.list.length + 1);
+  //     state.list.push(state.list.length + 1)
   //   }
-  //   state.loading = false;
+  //   state.loading = false
   //   if (state.list.length >= 40) {
-  //     state.finished = true;
+  //     state.finished = true
   //   }
-  // }, 1000);
+  // }, 1000)
 }
 </script>
 <style lang="less" scoped>
@@ -162,10 +147,11 @@ const loadData = async init => {
     &-name {
       flex: 1;
       padding: 0px 0 0px 30px;
-      font-size: 28px;
+      font-size: 25px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      color: #333;
       .price {
         display: flex;
         align-items: center;
@@ -174,12 +160,17 @@ const loadData = async init => {
           flex: 1;
           text-align: right;
         }
-      }
-      .last {
-        color: #ff0036;
-        font-size: 28px;
+        .active {
+          color: rgb(242, 145, 0);
+        }
       }
     }
   }
+}
+/deep/ .van-tab--active {
+  color: rgb(242, 145, 0);
+}
+/deep/ .van-cell__value {
+  color: #ff0036;
 }
 </style>

@@ -10,43 +10,51 @@
     <h2>*银行卡与银行卡预留手机号以及姓名 必须都正确，不然无法转账！！！</h2>
     <van-form label-width="5em" @submit="onSubmit">
       <van-field
-        v-model="form.captcha"
+        v-model="form.bankName"
         placeholder="请选择提现银行"
         label="提现银行"
         is-link
         input-align="right"
+        @click="showBank = true"
         readonly
         :rules="[{ required: true, message: '请选择提现银行' }]"
       />
+      <!-- 银行弾框 -->
+      <van-popup v-model:show="showBank" position="bottom">
+        <van-picker
+          show-toolbar
+          :columns="bankJson()"
+          @confirm="onBankConfirm"
+          @cancel="showBank = false"
+        />
+      </van-popup>
       <van-field
-        v-model="form.captcha"
+        v-model="form.bankNum"
         placeholder="请输入银行卡号"
         label="银行卡号"
         input-align="right"
         :rules="[{ required: true, message: '请输入银行卡号' }]"
       />
       <van-field
-        v-model="form.captcha"
+        v-model="form.bankBranch"
         placeholder="请再次输入开户行名称"
         label="开户行名称"
         input-align="right"
         :rules="[{ required: true, message: '请再次输入开户行名称' }]"
       />
       <van-field
-        v-model="form.captcha"
-        placeholder="请选择开户行地"
-        label="开户行地"
-        is-link
+        v-model="form.name"
+        placeholder="请输入开户行姓名"
+        label="开户行姓名"
         input-align="right"
-        readonly
-        :rules="[{ required: true, message: '请选择开户行地' }]"
+        :rules="[{ required: true, message: '请输入开户行姓名' }]"
       />
       <van-field
-        v-model="form.captcha"
-        placeholder="请输入预留手机"
-        label="预留手机"
+        v-model="form.bankAddress"
+        placeholder="请选择开户行地"
+        label="开户行地"
         input-align="right"
-        :rules="[{ required: true, message: '请输入预留手机' }]"
+        :rules="[{ required: true, message: '请选择开户行地' }]"
       />
       <div class="sub">
         <van-button
@@ -63,19 +71,38 @@
   </div>
 </template>
 <script setup>
-import { sendCaptcha, login } from '@/api/user'
-import { reactive, ref } from 'vue'
+import { getBankApi, setBankApi } from '@/api/user'
+import { bankJson } from '@/utils/staticJson.js'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const validatorPhone = val => /^1[3|4|5|6|7|8][0-9]{9}$/.test(val)
 const router = useRouter()
-
 const loading = ref(false)
-const form = reactive({})
+const showBank = ref(false)
+const form = ref({
+  bankAddress: undefined,
+  bankBranch: undefined,
+  bankName: undefined,
+  bankNum: undefined,
+  name: undefined
+})
 
+const onBankConfirm = value => {
+  console.log(value)
+  form.bankName = value
+  showBank.value = false
+}
+onMounted(async () => {
+  const { data } = await getBankApi()
+  data ? (form.value = data) : ''
+})
 const onSubmit = async () => {
   loading.value = true
-  // const { data } = await login(form)
+  const params = form.value
+  await setBankApi(params).finally(() => {
+    loading.value = false
+  })
   router.push({ path: '/collect/bind' })
 }
 </script>

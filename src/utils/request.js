@@ -5,11 +5,11 @@ import router from '@/router'
 import { getCookie, logout } from '@/utils/user'
 
 const pendingRequestList = []
-const baseUrl = import.meta.env.VITE_APP_BASE_API + '/saas-custom-api'
+const baseUrl = import.meta.env.VITE_APP_BASE_API
 
 // const baseUrl = '/custom-api'
 const instance = axios.create({
-  withCredentials: false,
+  withCredentials: true,
   baseURL: baseUrl,
   // timeout: 5000,
   headers: {
@@ -21,7 +21,6 @@ const instance = axios.create({
     }
   }
 })
-
 const pendingTesting = config => {
   const requestMark = `${config.method}${config.url}`
   // const markIndex = pendingRequestList.findIndex(item => {
@@ -55,14 +54,10 @@ const pendingTesting = config => {
 instance.interceptors.request.use(
   config => {
     pendingTesting(config)
-    const token = getCookie('accessToken')
-    // const storeId = getCookie('storeId')
+    // const token = getCookie('accessToken')
 
-    if (token) {
-      config.headers['Authorization'] = token
-    }
-    // if (storeId) {
-    //   config.headers['storeId'] = storeId
+    // if (token) {
+    //   config.headers['Authorization'] = token
     // }
 
     if (config.urlParams && Object.keys(config.urlParams).length) {
@@ -97,7 +92,14 @@ instance.interceptors.response.use(
     markIndex > -1 && pendingRequestList.splice(markIndex, 1)
 
     if (res && res.code && res.code !== 0) {
-      Toast.fail(res.message)
+      Toast.fail(res.msg)
+      if (res.code === 1001) {
+        logout().then(() => {
+          router.push({
+            path: '/user/login'
+          })
+        })
+      }
       return Promise.reject(response)
     }
     return Promise.resolve(res)
@@ -105,15 +107,11 @@ instance.interceptors.response.use(
   err => {
     if (err?.response?.data) {
       const errRes = err.response
-      const storeId = getCookie('storeId')
       Toast.fail(errRes.data.message)
       if (errRes?.status && errRes.status === 401) {
         logout().then(() => {
           router.push({
-            path: '/user/login',
-            query: {
-              storeId: storeId
-            }
+            path: '/user/login'
           })
         })
       }

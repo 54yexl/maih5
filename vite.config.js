@@ -24,9 +24,7 @@ export default () => {
       port: 2389,
       proxy: {
         '/custom-api': {
-          // target: 'http://192.168.10.26:8822',
-          target: 'http://test.saas.api.yidianlife.cn/saas-custom-api',
-          // target: 'http://192.168.10.231:8822',
+          target: 'http://39.103.152.66:8080',
           changeOrigin: true,
           rewrite: path => path.replace(/^\/custom-api/, '')
         }

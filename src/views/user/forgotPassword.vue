@@ -8,12 +8,43 @@
 
   <div class="content">
     <h2></h2>
-    <van-form label-width="4.4em" @submit="onSubmit">
+    <van-form label-width="5em" @submit="onSubmit">
       <van-field
-        v-model="form.mobile"
+        v-model="form.phone"
         placeholder="请输入手机号"
-        label="手机号"
-        :rules="[{validator: validatorPhone,required: true, message: '请填写正确的手机号'}]"
+        label="账号"
+        :rules="[
+          {
+            validator: validatorPhone,
+            required: true,
+            message: '请填写正确的手机号'
+          }
+        ]"
+      />
+      <van-field
+        v-model="form.captcha"
+        placeholder="请输入图形验证码"
+        label="图形验证码"
+        :rules="[
+          {
+            required: true,
+            message: '请输入图形验证码'
+          }
+        ]"
+      >
+        <template #button>
+          <img
+            class="yzmimg"
+            :src="captchaUrl"
+            @click="captchaUrl = captchaApi()"
+          />
+        </template>
+      </van-field>
+      <van-field
+        v-model="form.smsCode"
+        placeholder="请输入验证码"
+        label="验证码"
+        :rules="[{ required: true, message: '请输入验证码' }]"
       >
         <template #button>
           <span class="code" v-if="!time" @click="sendCode">获取验证码</span>
@@ -21,25 +52,25 @@
         </template>
       </van-field>
       <van-field
-        v-model="form.captcha"
-        placeholder="请输入验证码"
-        label="验证码"
-        :rules="[{required: true,message: '请输入验证码'}]"
-      />
-      <van-field
-        v-model="form.captcha"
+        v-model="form.password"
         placeholder="请输入密码"
         label="新密码"
-        :rules="[{required: true,message: '请输入密码'}]"
+        :rules="[{ required: true, message: '请输入密码' }]"
       />
       <van-field
-        v-model="form.captcha"
+        v-model="form.newpassword"
         placeholder="请再次输入新密码"
         label="确认密码"
-        :rules="[{required: true,message: '请再次输入新密码'}]"
+        :rules="[{ required: true, message: '请再次输入新密码' }]"
       />
       <div class="sub">
-        <van-button block type="primary" native-type="submit" :loading="loading" loading-text="修改中...">
+        <van-button
+          block
+          type="primary"
+          native-type="submit"
+          :loading="loading"
+          loading-text="修改中..."
+        >
           确认修改
         </van-button>
       </div>
@@ -47,8 +78,9 @@
   </div>
 </template>
 <script setup>
-import { sendCaptcha, login } from '@/api/user'
+import { forgetSendCodeApi, forgetKeyApi,captchaApi } from '@/api/user'
 import { reactive, ref } from 'vue'
+import { Toast } from 'vant'
 import { useRouter } from 'vue-router'
 
 const validatorPhone = val => /^1[3|4|5|6|7|8][0-9]{9}$/.test(val)
@@ -56,23 +88,31 @@ const router = useRouter()
 
 const time = ref(0)
 const loading = ref(false)
+const captchaUrl = ref(captchaApi())
 const form = reactive({
   mobile: undefined,
-  captcha: undefined
+  captcha: undefined,
+  smsCode: undefined,
+  password: undefined,
+  newpassword: undefined
 })
 
-
 const onSubmit = async () => {
+  if(form.newpassword !== form.password){
+    Toast.fail('俩次密码不一致，请确认')
+    return
+  }
   loading.value = true
-  const { data } = await login(form)
+  const { data } = await forgetKeyApi(form)
   router.push({ path: '/user/login' })
 }
 
 const sendCode = async () => {
-  await sendCaptcha({
-    mobile: form.mobile
+  const code = await forgetSendCodeApi({
+    phone: form.phone,
+    captcha: form.captcha
   })
-  time.value = 18000
+  code === 0 ? (time.value = 18000) : ''
 }
 </script>
 
@@ -96,7 +136,7 @@ const sendCode = async () => {
     color: #de424e;
     font-size: 28px;
   }
-  /deep/ .van-form .van-cell:first-child .van-field__control {
+  /deep/ .van-form .van-cell:nth-child(3) .van-field__control {
     border-right: solid 1px #ccc;
   }
 }
