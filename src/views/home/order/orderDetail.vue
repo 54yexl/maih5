@@ -82,7 +82,7 @@
         <van-step>
           <h3>接受任务</h3>
           <p>接单日期：{{ detail.receiveTime }}</p>
-          <p>订单编号：10256552</p>
+          <p>订单编号：{{ detail.id }}</p>
           <p>买号：{{ detail.account }}</p>
         </van-step>
         <van-step>
@@ -303,7 +303,7 @@ const onComConfirm = value => {
     }
   }
 }
-.van-steps h3{
+.van-steps h3 {
   font-size: 35px;
   font-weight: bold;
   color: #333;
