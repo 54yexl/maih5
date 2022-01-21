@@ -60,3 +60,15 @@ export const orderComplaintApi = data =>
     method: 'post',
     data
   })
+export const shopCheckApi = params =>
+  request({
+    url: `${serviceBase.API}/order/shop/check`,
+    method: 'post',
+    params
+  })
+export const orderCancelApi = params =>
+  request({
+    url: `${serviceBase.API}/order/cancel/${params.id}`,
+    method: 'get',
+    params
+  })

@@ -12,7 +12,7 @@
         <van-image :src="detail.goodsPic" :width="85" :height="85" />
         <div class="goods-name">
           <div class="goods-name-txt">
-            搜索展示价格：{{ detail.ticketName || 0 }}
+            搜索展示价格：{{ detail.goodsMoney || 0 }}
           </div>
           <div class="price">
             <div>
@@ -21,6 +21,7 @@
               }}
             </div>
           </div>
+          <div>购买数量：{{ detail.num || 0 }}</div>
         </div>
       </div>
       <div class="goods-total">
@@ -46,23 +47,43 @@
 
     <div class="orderdetail-bg">
       <div class="butlist">
-        <van-button plain type="primary" size="small">操作任务</van-button>
+        <van-button
+          plain
+          type="primary"
+          size="small"
+          @click="
+            router.push({
+              path: `/home/operate/task`,
+              query: { id: id }
+            })
+          "
+        >
+          操作任务
+        </van-button>
         <van-button
           plain
           type="primary"
           size="small"
           @click="state.showComplaint = true"
-          >申诉任务</van-button
+          v-show="detail.exceptionStatus !== 1"
         >
-        <van-button plain type="primary" size="small">取消任务</van-button>
+          申诉任务
+        </van-button>
+        <van-button
+          plain
+          type="primary"
+          size="small"
+          @click="state.showCancel = true"
+          >取消任务</van-button
+        >
       </div>
       <!-- 0.全部 1.待审核 2.待操作 3.待返款 4.待好评 5.待确认 6.待追评 7.预售订单 10.已完成 -->
       <van-steps direction="vertical">
         <van-step>
           <h3>接受任务</h3>
-          <p>接单日期：2021-12-31 14:39:43</p>
+          <p>接单日期：{{ detail.receiveTime }}</p>
           <p>订单编号：10256552</p>
-          <p>买号：52222</p>
+          <p>买号：{{ detail.account }}</p>
         </van-step>
         <van-step>
           <h3>操作任务</h3>
@@ -80,15 +101,22 @@
         </van-step>
         <van-step>
           <h3>商家确认</h3>
-          <p>返款方式：平台返款</p>
-          <p>返款金额：￥444</p>
+          <p>
+            返款方式： {{ detail.returnType === 1 ? '平台返款' : '商家返款' }}
+          </p>
+          <p>返款金额：￥{{ detail.goodsMoney || 0 }}</p>
         </van-step>
+        <!-- <van-step>
+          <h3>签收好评</h3>
+          <p>物流签收好评：{{ detail.goodsMoney || 0 }}</p>
+        </van-step> -->
         <van-step>
           <h3>任务完成</h3>
-          <p>获得佣金：3.04金</p>
+          <p>获得佣金：{{ detail.commission }}元</p>
         </van-step>
       </van-steps>
     </div>
+    <!-- 申诉弾框 -->
     <van-dialog
       class="hotel-detail-dialog"
       v-model:show="state.showComplaint"
@@ -159,13 +187,50 @@
         </div>
       </van-form>
     </van-dialog>
+
+    <!-- 取消任务弾框 -->
+    <van-dialog
+      class="hotel-detail-dialog"
+      v-model:show="state.showCancel"
+      @close="state.showCancel = false"
+      :showConfirmButton="false"
+      closeOnClickOverlay
+    >
+      <div class="header">取消任务</div>
+      <van-divider style="margin: 0" />
+      <van-form label-width="6em" @submit="onCancelubmit">
+        <van-field
+          v-model="cancelForm.remark"
+          placeholder="请输入取消说明"
+          label="取消说明"
+          rows="2"
+          autosize
+          show-word-limit
+          type="textarea"
+          maxlength="150"
+          :rules="[{ required: true, message: '请输入取消说明' }]"
+        />
+
+        <div class="sub">
+          <van-button
+            block
+            type="primary"
+            native-type="submit"
+            :loading="state.loading"
+            loading-text="提交中..."
+          >
+            确认提交
+          </van-button>
+        </div>
+      </van-form>
+    </van-dialog>
   </div>
 </template>
 <script setup>
 import moment from 'moment'
 import { useRouter, useRoute } from 'vue-router'
 import { reactive, ref, onBeforeMount } from 'vue'
-import { orderDetailApi, orderComplaintApi } from '@/api/home'
+import { orderDetailApi, orderComplaintApi, orderCancelApi } from '@/api/home'
 import { complaintTypeJson } from '@/utils/staticJson.js'
 const router = useRouter()
 const detail = ref({})
@@ -177,9 +242,14 @@ const comForm = ref({
   complaintPic1: undefined,
   complaintPic2: undefined
 })
+const cancelForm = ref({
+  remark: undefined,
+  id: id
+})
 const state = reactive({
   showComplaint: false,
   showComplaintType: false,
+  showCancel: false,
   loading: false
 })
 onBeforeMount(async () => {
@@ -193,6 +263,15 @@ const onComplaintSubmit = async () => {
   const { data } = await orderComplaintApi(comForm.value).finally(() => {
     state.loading = false
     state.showComplaintType = false
+    router.replace('/home/order')
+  })
+}
+const onCancelubmit = async () => {
+  state.loading = true
+  const { data } = await orderCancelApi(cancelForm.value).finally(() => {
+    state.loading = false
+    state.showCancel = false
+    router.replace('/home/order')
   })
 }
 const onComConfirm = value => {
@@ -223,6 +302,12 @@ const onComConfirm = value => {
       padding-right: 20px;
     }
   }
+}
+.van-steps h3{
+  font-size: 35px;
+  font-weight: bold;
+  color: #333;
+  padding-bottom: 20px;
 }
 .goods {
   display: flex;
