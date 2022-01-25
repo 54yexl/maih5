@@ -30,9 +30,6 @@ export default () => {
         }
       }
     },
-    // proxy: {
-
-    // },
     plugins: [
       vue(),
       styleImport({

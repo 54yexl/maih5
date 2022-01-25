@@ -64,8 +64,9 @@
       <img src="@/assets/qq.png" />
     </div>
     <!-- 通告 -->
-    <van-dialog
+    <van-popup
       class="hotel-detail-dialog"
+      :style="{ 'border-radius': '10px', width: '90%', top: '45%' }"
       v-model:show="state.showNotice"
       @close="state.showNotice = false"
       :showConfirmButton="false"
@@ -83,7 +84,7 @@
           确定
         </van-button>
       </div>
-    </van-dialog>
+    </van-popup>
   </div>
 </template>
 
@@ -140,7 +141,7 @@ const tabList = [
 onMounted(async () => {
   const { data } = await noticeApi()
   state.notice = data
-  // state.showNotice = true
+  state.showNotice = true
 })
 </script>
 
@@ -198,6 +199,8 @@ onMounted(async () => {
   }
   .wrapper {
     padding: 0 50px;
+    word-wrap:break-word;
+    font-size: 20px;
   }
   .sub-btn {
     width: 100%;

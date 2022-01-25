@@ -144,8 +144,9 @@
       </van-steps>
     </div>
     <!-- 申诉弾框 -->
-    <van-dialog
+    <van-popup
       class="hotel-detail-dialog"
+      :style="{ 'border-radius': '10px', width: '90%', top: '45%' }"
       v-model:show="state.showComplaint"
       @close="state.showComplaint = false"
       :showConfirmButton="false"
@@ -213,7 +214,7 @@
           </van-button>
         </div>
       </van-form>
-    </van-dialog>
+    </van-popup>
 
     <!-- 取消任务弾框 -->
     <van-dialog

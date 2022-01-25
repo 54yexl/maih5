@@ -111,8 +111,9 @@
     <van-tabbar-item icon="user-o" name="user-o"> 个人 </van-tabbar-item>
   </van-tabbar>
   <!-- 修改昵称 -->
-  <van-dialog
+  <van-popup
     class="hotel-detail-dialog"
+    :style="{ 'border-radius': '10px', width: '90%', top: '45%' }"
     v-model:show="foot.showNick"
     @close="foot.showNick = false"
     :showConfirmButton="false"
@@ -139,7 +140,7 @@
         </van-button>
       </div>
     </van-form>
-  </van-dialog>
+  </van-popup>
 </template>
 <script setup>
 import { useRouter } from 'vue-router'
