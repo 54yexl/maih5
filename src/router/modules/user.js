@@ -28,6 +28,11 @@ const routes = [
     path: '/user/set',
     name: 'Set',
     component: () => import('@/views/user/set.vue')
+  },
+  {
+    path: '/share/friends',
+    name: 'ShareFriends',
+    component: () => import('@/views/user/shareFriends.vue')
   }
 ]
 export default routes

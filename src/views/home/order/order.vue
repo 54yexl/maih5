@@ -13,10 +13,10 @@
     @click-tab="onClickTab"
   >
     <van-tab
-      v-for="item in tabList"
-      :key="item.key"
-      :title="item.label"
-      :name="item.key"
+      v-for="tab in tabList"
+      :key="tab.key"
+      :title="tab.label"
+      :name="tab.key"
     >
       <van-list
         v-model:loading="state.loading"
@@ -40,7 +40,13 @@
             <div class="goods-name">
               <div class="price">
                 <div>任务ID：{{ item.id }}</div>
-                <div class="num" style="color: #999">2021-12-31 14:39:43</div>
+                <div class="num" style="color: #999">
+                  {{ item.receiveTime }}
+                </div>
+              </div>
+              <div class="price" v-show="tab.key === 7">
+                <div>预售时间：{{ item.id }}</div>
+                <div class="num" style="color: #999">{{ item.canDoTime }}</div>
               </div>
               <div class="price">
                 <div>佣金：{{ item.commission }}</div>
@@ -95,7 +101,7 @@ const tabList = [
     key: 3
   },
   {
-    label: '待好评',
+    label: '待评价',
     key: 4
   },
   {

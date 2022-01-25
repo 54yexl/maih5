@@ -51,6 +51,7 @@
           plain
           type="primary"
           size="small"
+          v-show="detail.statusStr === '待操作'"
           @click="
             router.push({
               path: `/home/operate/task`,
@@ -75,6 +76,32 @@
           size="small"
           @click="state.showCancel = true"
           >取消任务</van-button
+        >
+        <van-button
+          plain
+          type="primary"
+          size="small"
+          v-show="detail.statusStr === '待评价'"
+          @click="
+            router.push({
+              path: `/home/evaluation/task`,
+              query: { id: id, type: 1 }
+            })
+          "
+          >评价任务</van-button
+        >
+        <van-button
+          plain
+          type="primary"
+          size="small"
+          v-show="detail.statusStr === '待追评'"
+          @click="
+            router.push({
+              path: `/home/evaluation/task`,
+              query: { id: id, type: 2 }
+            })
+          "
+          >追评</van-button
         >
       </div>
       <!-- 0.全部 1.待审核 2.待操作 3.待返款 4.待好评 5.待确认 6.待追评 7.预售订单 10.已完成 -->

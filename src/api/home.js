@@ -72,3 +72,21 @@ export const orderCancelApi = params =>
     method: 'get',
     params
   })
+export const orderFinishApi = params =>
+  request({
+    url: `${serviceBase.API}/order/opt/finish`,
+    method: 'post',
+    params
+  })
+export const orderCommentApi = params =>
+  request({
+    url: `${serviceBase.API}/order/comment/${params.id}`,
+    method: 'get',
+    params
+  })
+export const orderCommentFinApi = params =>
+  request({
+    url: `${serviceBase.API}/order/comment/finish`,
+    method: 'post',
+    params
+  })

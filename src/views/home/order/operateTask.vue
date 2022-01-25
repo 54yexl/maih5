@@ -24,15 +24,14 @@
     <p class="tips">
       禁止使用淘宝客、返利网等方式下单，否则一律永久封号并冻结资金！禁止乱添加关键词
     </p>
-    <van-cell title="订单编号" value="修改密码" />
+    <van-cell title="订单编号" :value="detail.id" />
     <van-cell
       title="任务类型"
       :value="detail.screenFlag === 1 ? '需要截图任务' : '无截图任务'"
     />
-
     <!-- entryShopType 1.2.3对应entryShopTypeOptionExted value字段，4直接打开 6是取value图片展示 99五张图&备注-->
     <van-cell
-      v-show="detail.entryShopType !== 4 || detail.entryShopType !== 99"
+      v-show="detail.entryShopType !== 4"
       :title="
         detail.entryShopType === 1
           ? '搜索关键词'
@@ -52,6 +51,38 @@
       "
       :value="detail?.entryShopTypeOptionExted?.value"
     />
+    <div class="tips" v-show="detail.entryShopType === 99">
+      <van-image
+        width="100"
+        height="100"
+        v-show="detail?.entryShopTypeOptionExted?.pic1"
+        :src="detail?.entryShopTypeOptionExted?.pic1"
+      />
+      <van-image
+        width="100"
+        height="100"
+        v-show="detail?.entryShopTypeOptionExted?.pic2"
+        :src="detail?.entryShopTypeOptionExted?.pic2"
+      />
+      <van-image
+        width="100"
+        height="100"
+        v-show="detail?.entryShopTypeOptionExted?.pic3"
+        :src="detail?.entryShopTypeOptionExted?.pic3"
+      />
+      <van-image
+        width="100"
+        height="100"
+        v-show="detail?.entryShopTypeOptionExted?.pic4"
+        :src="detail?.entryShopTypeOptionExted?.pic4"
+      />
+      <van-image
+        width="100"
+        height="100"
+        v-show="detail?.entryShopTypeOptionExted?.pic5"
+        :src="detail?.entryShopTypeOptionExted?.pic5"
+      />
+    </div>
     <van-cell
       v-show="detail.entryShopType === 4"
       is-link
@@ -67,13 +98,6 @@
       不允许花呗（严禁使用花呗，否则扣手续费：本金×1%）<br />
       下单支付（提交支付宝上面的账单截图）<br />
     </div> -->
-    <div
-      class="tips"
-      v-for="item in detail.publishTaskOptionList"
-      :key="item.id"
-    >
-      {{ item.optionName + '：' + item.optionValue }}
-    </div>
 
     <h3>注意事项</h3>
     <div class="tips" style="color: #333">
@@ -95,6 +119,7 @@
       <van-field
         v-model="shopName"
         label=""
+        :rules="[{ required: true, message: '请输入店铺名称' }]"
         style="border: solid 1px #1989fa; margin-right: 10px"
       />
       <van-button style="width: 150px" type="primary" native-type="submit">
@@ -142,6 +167,26 @@
     <div class="tips">
       *是否搭配商品：{{ detail.goodsCompareNum === 1 ? '是' : '否' }}
     </div>
+    <div
+      class="tips"
+      v-for="item in detail.publishTaskOptionList"
+      :key="item.id"
+    >
+      {{ item.optionName + '：' + item.optionValue }}
+    </div>
+    <van-button
+      type="primary"
+      @click="
+        router.push({
+          path: '/home/finish/task',
+          query: { id: id, screenFlag:detail.screenFlag }
+        })
+      "
+      block
+      style="width: 85%; margin: 20px auto"
+    >
+      操作完成
+    </van-button>
   </div>
 </template>
 <script setup>
@@ -165,14 +210,13 @@ const onShopSubmit = async () => {
     shopName: shopName.value,
     id: id
   })
-  console.log(data)
 }
 </script>
 
 <style lang="less" scoped>
 .content {
   background: #fff;
-  padding: 120px 0px 0;
+  padding: 90px 0px 0;
   & > h3 {
     line-height: 80px;
     font-size: 30px;

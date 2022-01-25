@@ -13,6 +13,16 @@ const routes = [
     path: '/home/operate/task',
     name: 'OperateTask',
     component: () => import('@/views/home/order/operateTask.vue')
+  },
+  {
+    path: '/home/finish/task',
+    name: 'FinishTask',
+    component: () => import('@/views/home/order/finishTask.vue')
+  },
+  {
+    path: '/home/evaluation/task',
+    name: 'EvaluationTask',
+    component: () => import('@/views/home/order/evaluationTask.vue')
   }
 ]
 

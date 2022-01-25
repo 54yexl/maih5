@@ -16,7 +16,7 @@
         <div class="item" v-for="item in state.list" :key="item.publishTaskOrderId">
           <div class="goods">
             <van-image
-              :src="item.complaintPic1"
+              :src="item.goodsPic"
               :width="80"
               :height="80"
             />

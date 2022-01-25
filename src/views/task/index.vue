@@ -53,27 +53,32 @@
       <div class="item">
         <div class="label">商品主图</div>
         <div class="value">
-          <van-image
-            width="100"
-            height="100"
-            :src="detail.goodsPic"
-          />
+          <van-image width="100" height="100" :src="detail?.goodsPic" />
         </div>
       </div>
       <div class="item">
         <div class="label">佣金</div>
-        <div class="value">{{ detail.commission }}</div>
+        <div class="value">{{ detail?.commission }}</div>
       </div>
       <div class="item">
         <div class="label">商品单价</div>
-        <div class="value">{{ detail.goodsPrice }}元</div>
+        <div class="value">{{ detail?.goodsPrice }}元</div>
       </div>
       <div class="item">
         <div class="label">购买数量</div>
-        <div class="value">{{ detail.buyNum }}个</div>
+        <div class="value">{{ detail?.buyNum }}个</div>
       </div>
 
-      <van-button class="sub-btn" type="primary" @click="state.showGet = false"
+      <van-button
+        class="sub-btn"
+        type="primary"
+        @click="
+          (state.showGet = false),
+            router.replace({
+              path: `/home/order/detail`,
+              query: { id: detail?.id }
+            })
+        "
         >确定</van-button
       >
     </div>
@@ -97,7 +102,6 @@ const detail = ref({})
 const loadData = () => {
   TaskListApi({ status: 1 }).then(({ data }) => {
     nums.value = data
-    console.log(data)
   })
 }
 loadData()
@@ -106,8 +110,10 @@ const doGet = async () => {
   const { data } = await GetTaskApi(nums.value.map(v => v.id)).finally(() => {
     state.loading = false
   })
-  state.showGet = true
-  detail.value = data
+  if (data) {
+    state.showGet = true
+    detail.value = data
+  }
 }
 </script>
 

@@ -47,7 +47,12 @@
           icon-color="#FFD252"
           to="/my/friend"
         />
-        <van-grid-item icon="share-o" text="分享朋友" icon-color="#fc3251" />
+        <van-grid-item
+          icon="share-o"
+          text="分享朋友"
+          icon-color="#fc3251"
+          :to="'/share/friends?inviteCoe=' + state.inviteCoe"
+        />
         <van-grid-item
           icon="balance-list-o"
           text="收益"
@@ -68,7 +73,7 @@
     <div class="card tool">
       <h1>常用工具</h1>
       <van-grid :column-num="4" :border="false">
-        <van-grid-item icon="new" text="新手教程" icon-color="#745AFF" />
+        <!-- <van-grid-item icon="new" text="新手教程" icon-color="#745AFF" /> -->
         <van-grid-item
           icon="gold-coin"
           text="收款绑定"
@@ -81,11 +86,11 @@
           icon-color="#F0BD84"
           to="/account/bind"
         />
-        <van-grid-item
+        <!-- <van-grid-item
           icon="phone-circle"
           text="帮助与客服"
           icon-color="#F12D48"
-        />
+        /> -->
         <van-grid-item
           icon="setting"
           text="设置"
