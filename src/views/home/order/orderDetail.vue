@@ -217,8 +217,9 @@
     </van-popup>
 
     <!-- 取消任务弾框 -->
-    <van-dialog
+    <van-popup
       class="hotel-detail-dialog"
+      :style="{ 'border-radius': '10px', width: '90%', top: '45%' }"
       v-model:show="state.showCancel"
       @close="state.showCancel = false"
       :showConfirmButton="false"
@@ -251,7 +252,7 @@
           </van-button>
         </div>
       </van-form>
-    </van-dialog>
+    </van-popup>
   </div>
 </template>
 <script setup>

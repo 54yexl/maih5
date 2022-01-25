@@ -39,8 +39,9 @@
       个人
     </van-tabbar-item>
   </van-tabbar>
-  <van-dialog
+  <van-popup
     class="hotel-detail-dialog"
+    :style="{ 'border-radius': '10px', width: '90%', top: '45%' }"
     v-model:show="state.showGet"
     @close="state.showGet = false"
     :showConfirmButton="false"
@@ -82,7 +83,7 @@
         >确定</van-button
       >
     </div>
-  </van-dialog>
+  </van-popup>
 </template>
 <script setup>
 import { GetTaskApi, TaskListApi } from '@/api/task'

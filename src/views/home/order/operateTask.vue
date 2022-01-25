@@ -137,7 +137,7 @@
     </div>
     <div class="bot33">》任意点开多个非目标商品，慢慢浏览至底部</div>
     <div class="bot33">》找到目标商品图，填写目标商品店铺名验证</div>
-    <div class="tips">填写店铺名称验证（提示：象*******7）</div>
+    <div class="tips">填写店铺名称验证（提示：{{ detail.shopName }}）</div>
     <div class="tips">
       由于部分店铺名称相似，请仔细核对，确保下单的店铺名称和要求的完全一致才能操作。<br />
       拍错店铺需自行承担损失。<br />
@@ -179,7 +179,7 @@
       @click="
         router.push({
           path: '/home/finish/task',
-          query: { id: id, screenFlag:detail.screenFlag }
+          query: { id: id, screenFlag: detail.screenFlag }
         })
       "
       block
