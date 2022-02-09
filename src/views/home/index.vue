@@ -140,8 +140,10 @@ const tabList = [
 
 onMounted(async () => {
   const { data } = await noticeApi()
-  state.notice = data
-  state.showNotice = true
+  if (data) {
+    state.notice = data
+    state.showNotice = true
+  }
 })
 </script>
 
@@ -176,11 +178,11 @@ onMounted(async () => {
   .van-grid {
     background: #fff;
   }
-  .fixqq{
+  .fixqq {
     position: fixed;
     top: 80%;
     right: 20px;
-    img{
+    img {
       width: 120px;
       height: 120px;
       border-radius: 50%;
@@ -199,7 +201,7 @@ onMounted(async () => {
   }
   .wrapper {
     padding: 0 50px;
-    word-wrap:break-word;
+    word-wrap: break-word;
     font-size: 20px;
   }
   .sub-btn {

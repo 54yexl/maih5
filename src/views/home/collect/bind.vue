@@ -11,25 +11,25 @@
     title="*身份证"
     class="labelred"
     :value="info.status === 1 ? '已绑定' : '未绑定'"
-    :url="info.status === 1 ? '' : '/#/collect/bindId'"
+    :to="info.status === 1 ? '' : '/collect/bindId'"
   />
   <van-cell
     class="labelred"
     title="*银行卡"
     :value="bank ? '已绑定' : '未绑定'"
-    url="/#/collect/bindBank"
+    to="/collect/bindBank"
   />
   <van-cell
     title="*支付宝"
     class="labelred"
     :value="alipay ? '已绑定' : '未绑定'"
-    url="/#/collect/bindAlipay"
+    to="/collect/bindAlipay"
   />
   <van-cell
     class="labelred"
     title="*微信"
     :value="info.weChat"
-    url="/#/collect/bindWechat"
+    to="/collect/bindWechat"
   />
   <van-cell title="QQ号" :value="info.qq" />
 </template>
