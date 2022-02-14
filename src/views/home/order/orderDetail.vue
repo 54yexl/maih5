@@ -9,7 +9,12 @@
   <div class="middle">
     <div class="orderdetail-bg">
       <div class="goods">
-        <van-image :src="detail.goodsPic" :width="85" :height="85" />
+        <van-image
+          :src="detail.goodsPic"
+          :width="85"
+          :height="85"
+          :class="detail.statusStr === '待操作' ? 'blur' : ''"
+        />
         <div class="goods-name">
           <div class="goods-name-txt">
             搜索展示价格：{{ detail.goodsMoney || 0 }}
@@ -107,7 +112,7 @@
       <!-- 0.全部 1.待审核 2.待操作 3.待返款 4.待好评 5.待确认 6.待追评 7.预售订单 10.已完成 -->
       <van-steps direction="vertical">
         <van-step>
-          <h3>接受任务</h3>
+          <h3 style="color: #07c160">接受任务</h3>
           <p>接单日期：{{ detail.receiveTime }}</p>
           <p>订单编号：{{ detail.id }}</p>
           <p>买号：{{ detail.account }}</p>
@@ -364,6 +369,12 @@ const onComConfirm = value => {
     padding: 30px 0 0;
     color: rgb(255, 0, 54);
     line-height: 1.5;
+  }
+  .blur {
+    -webkit-filter: blur(3px); /* Chrome, Opera */
+    -moz-filter: blur(3px);
+    -ms-filter: blur(3px);
+    filter: blur(3px);
   }
 }
 .pd30 {

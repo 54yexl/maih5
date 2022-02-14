@@ -9,7 +9,7 @@
   <div class="content">
     <h3>任务商品</h3>
     <div class="goods">
-      <van-image :src="detail.goodsPic" :width="85" :height="85" />
+      <van-image :src="detail.goodsPic" :width="85" :height="85" class="blur" />
       <div class="goods-name">
         <div>搜索价格：{{ detail.goodsMoney || 0 }}</div>
         <div>店铺销量：{{ detail.commission }}</div>
@@ -122,8 +122,8 @@
         :rules="[{ required: true, message: '请输入店铺名称' }]"
         style="border: solid 1px #1989fa; margin-right: 10px"
       />
-      <van-button style="width: 150px" type="primary" native-type="submit">
-        核对店铺
+      <van-button style="width: 220px" type="primary" native-type="submit">
+        核对商品淘口令
       </van-button>
     </van-form>
 
@@ -152,11 +152,11 @@
     </div>
 
     <h3>操作要求</h3>
-    <div class="tips">
+    <!-- <div class="tips">
       *浏览商品数量：{{
         detail.browseNum === 0 ? '不要求' : detail.browseNum + '个'
       }}
-    </div>
+    </div> -->
     <div class="tips">
       *货比数量：{{
         detail.goodsCompareNum === 0
@@ -256,6 +256,12 @@ const onShopSubmit = async () => {
   .goods {
     display: flex;
     padding: 30px 30px 25px;
+    .blur {
+      -webkit-filter: blur(3px); /* Chrome, Opera */
+      -moz-filter: blur(3px);
+      -ms-filter: blur(3px);
+      filter: blur(3px);
+    }
     &-name {
       flex: 1;
       padding: 0px 0 0px 30px;
