@@ -20,6 +20,11 @@
         input-align="right"
         :rules="[{ required: true, message: '请输入账号' }]"
       />
+      <van-field label="淘宝验证" center>
+        <template #button>
+          <van-button size="small" type="success"> 点击登录验证 </van-button>
+        </template>
+      </van-field>
       <van-field
         v-model="form.sex"
         placeholder="请选择性别"
@@ -145,9 +150,9 @@
           type="primary"
           native-type="submit"
           :loading="loading"
-          loading-text="修改中..."
+          loading-text="绑定中..."
         >
-          确认修改
+          绑定
         </van-button>
       </div>
     </van-form>
@@ -222,8 +227,8 @@ onMounted(async () => {
   const id = useRoute()?.query?.id
   if (id) {
     const { data } = await BindAccountDetailApi({ id })
-    data.gradeLable = gradeJson().find((item) => item.key === data.credit).label
-    data.creditLable = ceditJson().find((item) => item.key === data.grade).label
+    data.gradeLable = gradeJson().find(item => item.key === data.credit).label
+    data.creditLable = ceditJson().find(item => item.key === data.grade).label
     data ? (form.value = { ...data }) : ''
   }
 })

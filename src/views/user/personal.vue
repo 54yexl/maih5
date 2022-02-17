@@ -13,7 +13,7 @@
             {{ state.nikeName || state.phone || '无' }} <van-icon name="edit" />
           </h4>
           <p>ID：{{ state.userId }}</p>
-          <div>邀请码：{{ state.inviteCoe || '无' }}</div>
+          <div>邀请码：{{ state.promotePermission ? state.inviteCoe : '无权限' }}</div>
         </div>
       </div>
       <div class="bottom">
@@ -48,6 +48,7 @@
           to="/my/friend"
         />
         <van-grid-item
+          v-show="state.promotePermission"
           icon="share-o"
           text="分享朋友"
           icon-color="#fc3251"
