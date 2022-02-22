@@ -150,6 +150,31 @@
     <div class="bot33">
       》进入目标商品详情页，从头至尾慢慢浏览，停留至少三分钟
     </div>
+    <div v-show="detail.goodsCompareNum">
+      <div class="setp">第三步：提交货比商品链接</div>
+      <van-form :model="compareForm" label-width="6em" @submit="onHbSubmit">
+        <template v-for="item in detail.goodsCompareNum" :key="item">
+          <van-field
+            v-model="compareForm[item]"
+            placeholder="请输入货比链接"
+            :label="'货比链接' + `${item}`"
+            input-align="right"
+            :rules="[{ required: true, message: '请输入货比链接' }]"
+          />
+        </template>
+        <div style="margin: 20px">
+          <van-button
+            block
+            type="primary"
+            native-type="submit"
+            :loading="loading"
+            loading-text="提交中..."
+          >
+            提交货比
+          </van-button>
+        </div>
+      </van-form>
+    </div>
 
     <h3>操作要求</h3>
     <!-- <div class="tips">
@@ -192,12 +217,14 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { orderDetailApi, shopCheckApi } from '@/api/home'
+import { orderDetailApi, shopCheckApi, compareAddApi } from '@/api/home'
+import { Toast } from 'vant'
 const router = useRouter()
 const detail = ref({})
 const loading = ref(false)
 const shopName = ref(undefined)
 const id = useRoute()?.query?.id
+const compareForm = ref({})
 
 onBeforeMount(async () => {
   const { data } = await orderDetailApi({ id })
@@ -206,10 +233,18 @@ onBeforeMount(async () => {
   }
 })
 const onShopSubmit = async () => {
-  const { data } = await shopCheckApi({
+  const { code, msg } = await shopCheckApi({
     shopName: shopName.value,
     id: id
   })
+  !code ? Toast.success(msg) : ''
+}
+const onHbSubmit = async () => {
+  const { code, msg } = await compareAddApi({
+    urlList: Object.values(compareForm.value).join(','),
+    id: +id
+  })
+  !code ? Toast.success(msg) : ''
 }
 </script>
 

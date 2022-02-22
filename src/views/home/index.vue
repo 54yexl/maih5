@@ -200,7 +200,7 @@ onMounted(async () => {
     text-align: center;
   }
   .wrapper {
-    padding: 0 50px;
+    padding: 50px 50px 0;
     word-wrap: break-word;
     font-size: 20px;
   }

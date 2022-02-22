@@ -66,6 +66,12 @@ export const shopCheckApi = params =>
     method: 'post',
     params
   })
+export const compareAddApi = params =>
+  request({
+    url: `${serviceBase.API}/order/compare/add`,
+    method: 'post',
+    params
+  })
 export const orderCancelApi = params =>
   request({
     url: `${serviceBase.API}/order/cancel/${params.id}`,
