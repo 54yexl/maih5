@@ -72,6 +72,12 @@ export const compareAddApi = params =>
     method: 'post',
     params
   })
+export const reviewAddApi = params =>
+  request({
+    url: `${serviceBase.API}/order/review/add`,
+    method: 'post',
+    params
+  })
 export const orderCancelApi = params =>
   request({
     url: `${serviceBase.API}/order/cancel/${params.id}`,

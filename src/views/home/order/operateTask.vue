@@ -175,6 +175,36 @@
         </div>
       </van-form>
     </div>
+    <div>
+      <div class="setp">第{{detail.goodsCompareNum ? '四' : '三'}}步：店内其他商品浏览</div>
+      <van-form :model="reviewForm"  label-width="6em" @submit="onTdSubmit">
+        <van-field
+          v-model="reviewForm[0]"
+          placeholder="请输入同店商品1"
+          label="同店商品1"
+          input-align="right"
+          :rules="[{ required: true, message: '请输入同店商品1链接' }]"
+        />
+        <van-field
+          v-model="reviewForm[1]"
+          placeholder="请输入同店商品2"
+          label="同店商品2"
+          input-align="right"
+          :rules="[{ required: true, message: '请输入同店商品2链接' }]"
+        />
+        <div style="margin: 20px">
+          <van-button
+            block
+            type="primary"
+            native-type="submit"
+            :loading="loading"
+            loading-text="提交中..."
+          >
+            提交同店商品浏览
+          </van-button>
+        </div>
+      </van-form>
+    </div>
 
     <h3>操作要求</h3>
     <!-- <div class="tips">
@@ -217,7 +247,7 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { orderDetailApi, shopCheckApi, compareAddApi } from '@/api/home'
+import { orderDetailApi, shopCheckApi, compareAddApi, reviewAddApi } from '@/api/home'
 import { Toast } from 'vant'
 const router = useRouter()
 const detail = ref({})
@@ -225,6 +255,7 @@ const loading = ref(false)
 const shopName = ref(undefined)
 const id = useRoute()?.query?.id
 const compareForm = ref({})
+const reviewForm = ref({})
 
 onBeforeMount(async () => {
   const { data } = await orderDetailApi({ id })
@@ -242,6 +273,13 @@ const onShopSubmit = async () => {
 const onHbSubmit = async () => {
   const { code, msg } = await compareAddApi({
     urlList: Object.values(compareForm.value).join(','),
+    id: +id
+  })
+  !code ? Toast.success(msg) : ''
+}
+const onTdSubmit = async () => {
+  const { code, msg } = await reviewAddApi({
+    urlList: Object.values(reviewForm.value).join(','),
     id: +id
   })
   !code ? Toast.success(msg) : ''
