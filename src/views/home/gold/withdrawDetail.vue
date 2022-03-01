@@ -14,13 +14,21 @@
     >
       <div class="item" v-for="item in list" :key="item.ticketId">
         <div class="info">
-          <div class="name">提现人:谢泽辉</div>
-          <div class="desc">不可退 | 不需要纸质门票</div>
-          <div class="name">提现金额:谢泽辉</div>
-          <div class="desc">19:00前可定今日票</div>
-          <div class="desc">19:00前可定今日票</div>
+          <div class="name">提现人: {{ item.name || '无' }}</div>
+          <div class="name">提现金额: {{ item.withdrawMoney || 0 }}</div>
+          <div class="desc">提现时间：{{ item.createTime }}</div>
+          <div class="desc">审核时间：{{ item.reviewTime || '暂未审核' }}</div>
+          <div class="desc" v-show="item.failReason">拒绝原因: {{ item.failReason }}</div>
         </div>
-        <van-button plain hairline type="primary">已返款</van-button>
+        <van-button plain hairline type="primary">{{
+          item.status === 0
+            ? '待审核'
+            : item.status === 1
+            ? '已返款'
+            : item.status === 2
+            ? '返款失败'
+            : '无'
+        }}</van-button>
       </div>
     </van-list>
   </div>

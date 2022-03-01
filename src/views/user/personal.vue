@@ -12,7 +12,7 @@
           <h4 @click="foot.showNick = true">
             {{ state.nikeName || state.phone || '无' }} <van-icon name="edit" />
           </h4>
-          <p>ID：{{ state.userId }}</p>
+          <p>ID：{{ state.id || '无' }}</p>
           <div>邀请码：{{ state.promotePermission ? state.inviteCoe : '无权限' }}</div>
         </div>
       </div>

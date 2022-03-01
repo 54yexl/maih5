@@ -36,7 +36,12 @@
           "
         >
           <div class="goods">
-            <van-image :src="item.goodsPic" :width="85" :height="85" />
+            <van-image
+              :src="item.goodsPic"
+              :width="85"
+              :height="85"
+              :class="item.statusStr === '待操作' ? 'blur' : ''"
+            />
             <div class="goods-name">
               <div class="price">
                 <div>任务ID：{{ item.id }}</div>
@@ -162,6 +167,12 @@ const loadData = async init => {
   background: #fff;
   border-radius: 10px;
   padding: 30px;
+  .blur {
+    -webkit-filter: blur(3px); /* Chrome, Opera */
+    -moz-filter: blur(3px);
+    -ms-filter: blur(3px);
+    filter: blur(3px);
+  }
   .goods {
     display: flex;
     padding: 30px 0 25px;

@@ -1,10 +1,5 @@
 <template>
-  <van-nav-bar
-    left-arrow
-    title="提现"
-    fixed
-    @clickLeft="() => router.go(-1)"
-  />
+  <van-nav-bar left-arrow title="提现" fixed @clickLeft="() => router.go(-1)" />
 
   <div class="content">
     <h2>*提现不满100，收2元手续费</h2>
@@ -47,6 +42,7 @@
 import { withdrawApi } from '@/api/gold'
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { Toast } from 'vant'
 
 const validatorPhone = val => /^1[3|4|5|6|7|8][0-9]{9}$/.test(val)
 const router = useRouter()
@@ -59,9 +55,10 @@ const form = reactive({
 
 const onSubmit = async () => {
   loading.value = true
-  const { data } = await withdrawApi(form).finally(() => {
+  const { code } = await withdrawApi(form).finally(() => {
     loading.value = false
   })
+  !code ? Toast.success('提现已提交，请耐心等待客服审核到账。') : ''
   router.push({ path: '/home' })
 }
 </script>

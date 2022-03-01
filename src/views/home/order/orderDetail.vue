@@ -80,6 +80,7 @@
           type="primary"
           size="small"
           @click="state.showCancel = true"
+          v-show="detail.statusStr === '待操作'"
           >取消任务</van-button
         >
         <van-button
