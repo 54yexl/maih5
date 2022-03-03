@@ -47,23 +47,23 @@ export const ceditJson = () => {
 export const gradeJson = () => {
   return [
     {
-      label: '1心',
+      label: '1级',
       key: 1
     },
     {
-      label: '2心',
+      label: '2级',
       key: 2
     },
     {
-      label: '3心',
+      label: '3级',
       key: 3
     },
     {
-      label: '4心',
+      label: '4级',
       key: 4
     },
     {
-      label: '5心',
+      label: '5级',
       key: 5
     }
   ]

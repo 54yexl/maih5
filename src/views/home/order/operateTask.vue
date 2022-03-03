@@ -9,7 +9,7 @@
   <div class="content">
     <h3>任务商品</h3>
     <div class="goods">
-      <van-image :src="detail.goodsPic" :width="85" :height="85" class="blur" />
+      <van-image :src="detail.goodsPic" :width="100" :height="100" class="blur" />
       <div class="goods-name">
         <div>搜索价格：{{ detail.goodsMoney || 0 }}</div>
         <div>店铺销量：{{ detail.commission }}</div>
@@ -119,7 +119,7 @@
       <van-field
         v-model="shopName"
         label=""
-        :rules="[{ required: true, message: '请输入店铺名称' }]"
+        :rules="[{ required: true, message: '请核对商品淘口令' }]"
         style="border: solid 1px #1989fa; margin-right: 10px"
       />
       <van-button style="width: 220px" type="primary" native-type="submit">

@@ -30,7 +30,7 @@
           :key="item.memberId"
         >
           <div class="price">
-            <div>消费ID：{{ item.memberId }}</div>
+            <div>消费ID：{{ item.sourceId || '无' }}</div>
             <div class="num" style="color: #999">{{ item.optTime }}</div>
           </div>
           <div class="price">

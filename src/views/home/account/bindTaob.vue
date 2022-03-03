@@ -22,7 +22,13 @@
       />
       <van-field label="淘宝验证" center>
         <template #button>
-          <van-button size="small" type="success"> 点击登录验证 </van-button>
+          <van-button
+            size="small"
+            type="success"
+            @click="window.local_obj.begin()"
+          >
+            点击登录验证
+          </van-button>
         </template>
       </van-field>
       <van-field

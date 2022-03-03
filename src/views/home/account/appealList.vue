@@ -15,22 +15,31 @@
   >
     <div class="item" v-for="item in state.list" :key="item.publishTaskOrderId">
       <div class="goods">
-        <van-image :src="item.goodsPic" :width="80" :height="80" />
-        <div
-          class="goods-name"
-          @click=";(state.show = true), (showDetail = item)"
-        >
+        <van-image :src="item.goodsPic" :width="100" :height="100" />
+        <div class="goods-name">
           <div class="price">
-            订单编号：{{ item.publishTaskOrderId || '无' }}
+            订单编号：<span>{{ item.publishTaskOrderId || '无' }}</span>
           </div>
-          <div class="price">申诉类型：{{ item.complaintType || '无' }}</div>
-          <div class="price">申诉日期：{{ item.addTime }}</div>
+          <div class="price">
+            申诉类型：<span>{{ item.complaintType || '无' }}</span>
+          </div>
+          <div class="price">
+            申诉日期：<span>{{ item.addTime }}</span>
+          </div>
           <div class="price">
             <van-button
               text="详情"
               type="primary"
               size="mini"
               style="padding: 0 15px"
+              @click=";(state.show = true), (showDetail = item)"
+            />
+            <van-button
+              text="申诉回复"
+              type="warning"
+              size="mini"
+              style="padding: 0 15px"
+              @click=";(state.formshow = true), (appealForm.id = item.id)"
             />
           </div>
         </div>
@@ -75,12 +84,45 @@
       </template>
     </van-cell-group>
   </van-popup>
+   <!-- 申诉表单 -->
+  <van-popup
+    class="hotel-detail-dialog"
+    :style="{ 'border-radius': '10px', width: '90%', top: '45%' }"
+    v-model:show="state.formshow"
+    @close="state.formshow = false"
+    :showConfirmButton="false"
+    closeOnClickOverlay
+  >
+    <div class="header">申诉回复</div>
+    <van-divider style="margin: 0" />
+    <van-form label-width="6em" @submit="onFormSubmit" style="padding: 0 20px 20px">
+      <van-field
+        v-model="appealForm.replayContent"
+        placeholder="请输入申诉内容"
+        label="申诉回复"
+        rows="3"
+        type="textarea"
+        maxlength="300"
+        show-word-limit
+        :rules="[{ required: true, message: '请输入申诉内容' }]"
+      />
+      <div class="sub">
+        <van-button
+          block
+          type="primary"
+          native-type="submit"
+        >
+          确认提交
+        </van-button>
+      </div>
+    </van-form>
+  </van-popup>
 </template>
 <script setup>
 import moment from 'moment'
 import { useRouter } from 'vue-router'
 import { reactive, ref } from 'vue'
-import { complaintListApi } from '@/api/home'
+import { complaintListApi, complaintReplayApi } from '@/api/home'
 const router = useRouter()
 const state = reactive({
   loading: false,
@@ -88,9 +130,14 @@ const state = reactive({
   list: [],
   page: 0,
   pageSize: 10,
-  show: false
+  show: false,
+  formshow: false
 })
 const showDetail = ref({})
+const appealForm = ref({
+  replayContent: undefined,
+  id: undefined
+})
 const loadData = async init => {
   !init
     ? state.page++
@@ -110,15 +157,12 @@ const loadData = async init => {
     state.finished = true
   }
   state.finished = true
-  // setTimeout(() => {
-  //   for (let i = 0; i < 10; i++) {
-  //     state.list.push(state.list.length + 1)
-  //   }
-  //   state.loading = false
-  //   if (state.list.length >= 40) {
-  //     state.finished = true
-  //   }
-  // }, 1000)
+}
+const onFormSubmit = async value => {
+  const { code } = await complaintReplayApi(appealForm.value)
+  if (code === 0) {
+    state.formshow = false
+  }
 }
 </script>
 <style lang="less" scoped>
@@ -143,6 +187,10 @@ const loadData = async init => {
         display: flex;
         align-items: center;
         padding-bottom: 10px;
+        & > span {
+          font-size: 13px;
+          color: #ff6667;
+        }
         .num {
           font-size: 24px;
           flex: 1;

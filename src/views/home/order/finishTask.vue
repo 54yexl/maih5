@@ -31,7 +31,7 @@
         ]"
       />
       <van-field
-        v-if="routeQuery?.screenFlag"
+        v-if="!routeQuery?.screenFlag"
         name="images"
         label="截图图片"
         :rules="[{ required: true, message: '请上传截图图片' }]"

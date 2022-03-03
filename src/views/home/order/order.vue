@@ -38,8 +38,8 @@
           <div class="goods">
             <van-image
               :src="item.goodsPic"
-              :width="85"
-              :height="85"
+              :width="100"
+              :height="100"
               :class="item.statusStr === '待操作' ? 'blur' : ''"
             />
             <div class="goods-name">

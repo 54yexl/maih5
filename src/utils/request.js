@@ -95,6 +95,7 @@ instance.interceptors.response.use(
       Toast.fail(res.msg)
       if (res.code === 1001) {
         logout().then(() => {
+          location.reload()
           router.push({
             path: '/user/login'
           })

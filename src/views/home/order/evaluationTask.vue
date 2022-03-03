@@ -9,7 +9,7 @@
   <div class="content">
     <h3>任务商品</h3>
     <div class="goods">
-      <van-image :src="detail.goodsPic" :width="85" :height="85" />
+      <van-image :src="detail.goodsPic" :width="100" :height="100" />
       <div class="goods-name">
         <div>搜索价格：{{ detail.goodsMoney || 0 }}</div>
         <div>店铺销量：{{ detail.commission }}</div>

@@ -13,7 +13,7 @@
           <span type="danger">{{ item.account }}</span>
         </template>
         <template #default>
-          <van-switch v-model="item.checked" size="24px" />
+          <van-switch v-model="item.orderOn" size="24px" />
         </template>
       </van-cell>
     </van-cell-group>
@@ -74,7 +74,7 @@
         class="sub-btn"
         type="primary"
         @click="
-          (state.showGet = false),
+          ;(state.showGet = false),
             router.replace({
               path: `/home/order/detail`,
               query: { id: detail?.id }
@@ -89,6 +89,7 @@
 import { GetTaskApi, TaskListApi } from '@/api/task'
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { Toast } from 'vant'
 
 const router = useRouter()
 const state = reactive({
@@ -107,8 +108,13 @@ const loadData = () => {
 }
 loadData()
 const doGet = async () => {
+  const ids = nums.value.filter(v => v.orderOn).map(v => v.id)
+  if (!ids.length) {
+    Toast.fail('请选择账号')
+    return
+  }
   state.loading = true
-  const { data } = await GetTaskApi(nums.value.map(v => v.id)).finally(() => {
+  const { data } = await GetTaskApi(ids).finally(() => {
     state.loading = false
   })
   if (data) {
