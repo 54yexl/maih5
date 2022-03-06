@@ -7,11 +7,37 @@
   />
 
   <div class="content">
+    <div class="downtme">
+      <div
+        v-if="
+          moment(new Date()).valueOf() - moment(detail.beginTime).valueOf() >
+          0
+        "
+      >
+        <van-count-down
+          :time="
+            moment(new Date()).valueOf() - moment(detail.beginTime).valueOf()
+          "
+          format="HH 时 mm 分 ss 秒"
+        />
+        <p>请在倒计时结束前完成操作任务</p>
+      </div>
+
+      <div v-else>任务超时</div>
+    </div>
     <h3>任务商品</h3>
     <div class="goods">
-      <van-image :src="detail.goodsPic" :width="100" :height="100" class="blur" />
+      <van-image
+        :src="detail.goodsPic"
+        :width="100"
+        :height="100"
+        class="blur"
+      />
       <div class="goods-name">
-        <div>搜索价格：{{ detail.goodsMoney || 0 }}</div>
+        <div class="goods-name-txt">
+          搜索展示价格：{{ detail.searchPrice || 0 }}
+        </div>
+        <div class="goods-name-txt">支付金额：{{ detail.goodsMoney || 0 }}</div>
         <div>店铺销量：{{ detail.commission }}</div>
         <div>购买数量：{{ detail.buyNum }}</div>
         <div class="last">
@@ -50,7 +76,16 @@
           : ''
       "
       :value="detail?.entryShopTypeOptionExted?.value"
-    />
+    >
+      {{ detail?.entryShopTypeOptionExted?.value }}
+      <van-button
+        v-show="detail.entryShopType === 1"
+        type="primary"
+        size="mini"
+        @click="copy(detail?.entryShopTypeOptionExted?.value)"
+        >复制</van-button
+      >
+    </van-cell>
     <div class="tips" v-show="detail.entryShopType === 99">
       <van-image
         width="100"
@@ -137,7 +172,7 @@
     </div>
     <div class="bot33">》任意点开多个非目标商品，慢慢浏览至底部</div>
     <div class="bot33">》找到目标商品图，填写目标商品店铺名验证</div>
-    <div class="tips">填写店铺名称验证（提示：{{ detail.shopName }}）</div>
+    <div class="tips">店铺名称（提示：{{ detail.shopName }}）</div>
     <div class="tips">
       由于部分店铺名称相似，请仔细核对，确保下单的店铺名称和要求的完全一致才能操作。<br />
       拍错店铺需自行承担损失。<br />
@@ -176,8 +211,10 @@
       </van-form>
     </div>
     <div>
-      <div class="setp">第{{detail.goodsCompareNum ? '四' : '三'}}步：店内其他商品浏览</div>
-      <van-form :model="reviewForm"  label-width="6em" @submit="onTdSubmit">
+      <div class="setp">
+        第{{ detail.goodsCompareNum ? '四' : '三' }}步：店内其他商品浏览
+      </div>
+      <van-form :model="reviewForm" label-width="6em" @submit="onTdSubmit">
         <van-field
           v-model="reviewForm[0]"
           placeholder="请输入同店商品1"
@@ -247,8 +284,16 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { orderDetailApi, shopCheckApi, compareAddApi, reviewAddApi } from '@/api/home'
+import useClipboard from 'vue-clipboard3'
+import moment from 'moment'
+import {
+  orderDetailApi,
+  shopCheckApi,
+  compareAddApi,
+  reviewAddApi
+} from '@/api/home'
 import { Toast } from 'vant'
+
 const router = useRouter()
 const detail = ref({})
 const loading = ref(false)
@@ -256,6 +301,7 @@ const shopName = ref(undefined)
 const id = useRoute()?.query?.id
 const compareForm = ref({})
 const reviewForm = ref({})
+const { toClipboard } = useClipboard()
 
 onBeforeMount(async () => {
   const { data } = await orderDetailApi({ id })
@@ -284,12 +330,35 @@ const onTdSubmit = async () => {
   })
   !code ? Toast.success(msg) : ''
 }
+const copy = async val => {
+  try {
+    await toClipboard(val)
+    Toast.success('复制成功')
+  } catch (e) {
+    console.error(e)
+    oast.success('复制失败')
+  }
+}
 </script>
 
 <style lang="less" scoped>
 .content {
   background: #fff;
   padding: 90px 0px 0;
+  .downtme {
+    background: linear-gradient(270deg, #0acffe 0%, #495aff 100%);
+    // box-shadow: 0px 5px 10px rgb(0 0 0 0.5);
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+    color: #fff;
+    /deep/ .van-count-down{
+      color: #fff;
+    }
+    p>{
+      padding-top: 15px;
+    }
+  }
   & > h3 {
     line-height: 80px;
     font-size: 30px;
@@ -330,10 +399,10 @@ const onTdSubmit = async () => {
     display: flex;
     padding: 30px 30px 25px;
     .blur {
-      -webkit-filter: blur(3px); /* Chrome, Opera */
-      -moz-filter: blur(3px);
-      -ms-filter: blur(3px);
-      filter: blur(3px);
+      -webkit-filter: blur(2px); /* Chrome, Opera */
+      -moz-filter: blur(2px);
+      -ms-filter: blur(2px);
+      filter: blur(2px);
     }
     &-name {
       flex: 1;

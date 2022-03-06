@@ -17,7 +17,10 @@
         />
         <div class="goods-name">
           <div class="goods-name-txt">
-            搜索展示价格：{{ detail.goodsMoney || 0 }}
+            搜索展示价格：{{ detail.searchPrice || 0 }}
+          </div>
+          <div class="goods-name-txt">
+            支付金额：{{ detail.goodsMoney || 0 }}
           </div>
           <div class="price">
             <div>
@@ -71,7 +74,7 @@
           type="primary"
           size="small"
           @click="state.showComplaint = true"
-          v-show="detail.exceptionStatus !== 1"
+          v-show="!detail.exceptionStatus > 0"
         >
           申诉任务
         </van-button>
@@ -372,10 +375,10 @@ const onComConfirm = value => {
     line-height: 1.5;
   }
   .blur {
-    -webkit-filter: blur(3px); /* Chrome, Opera */
-    -moz-filter: blur(3px);
-    -ms-filter: blur(3px);
-    filter: blur(3px);
+    -webkit-filter: blur(2px); /* Chrome, Opera */
+    -moz-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
   }
 }
 .pd30 {

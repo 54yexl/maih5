@@ -91,14 +91,14 @@ instance.interceptors.response.use(
     })
     markIndex > -1 && pendingRequestList.splice(markIndex, 1)
 
-    if (res && res.code && res.code === 0) {
+    if (res && res.code && res.code !== 0 && res.code !== 111) {
       Toast.fail(res.msg)
       if (res.code === 1001) {
         logout().then(() => {
-          // router.push({
-          //   path: '/user/login'
-          // })
-          location.reload(true)
+          router.replace({
+            path: '/user/login'
+          })
+          // location.reload(true)
         })
       }
       return Promise.reject(response)
@@ -108,7 +108,7 @@ instance.interceptors.response.use(
   err => {
     if (err?.response?.data) {
       const errRes = err.response
-      Toast.fail(errRes.data.message)
+      Toast.fail(errRes.data.msg)
       if (errRes?.status && errRes.status === 401) {
         logout().then(() => {
           router.push({

@@ -17,15 +17,20 @@
         </template>
       </van-cell>
     </van-cell-group>
-    <van-button
-      :loading="state.loading"
-      type="primary"
-      block
-      loading-text="接单中..."
-      @click="doGet"
-    >
+    <van-button type="primary" block loading-text="接单中..." @click="doGet">
       接单
     </van-button>
+
+    <van-loading
+      size="60px"
+      v-show="state.loading"
+      color="#1989fa"
+      type="spinner"
+      vertical
+      text-size="25px"
+    >
+      接单中...
+    </van-loading>
   </div>
   <!-- 底部 -->
   <van-tabbar v-model="state.active">
@@ -87,41 +92,80 @@
 </template>
 <script setup>
 import { GetTaskApi, TaskListApi } from '@/api/task'
-import { reactive, ref } from 'vue'
+import { reactive, ref, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Toast } from 'vant'
+import { getCookie, setCookie } from '@/utils/user'
 
 const router = useRouter()
 const state = reactive({
   loading: false,
   active: 'gold-coin-o',
   accountId: [],
-  showGet: false
+  showGet: false,
+  cycleOrder: false,
+  timer: null
 })
 const nums = ref([])
 const detail = ref({})
 
 const loadData = () => {
   TaskListApi({ status: 1 }).then(({ data }) => {
+    data.map(v => {
+      v.orderOn = v.orderOn ? true : false
+    })
     nums.value = data
+    // 主动开启定时器接单
+    if (String(getCookie('openLoop')) === 'true') {
+      doGet()
+      console.log('rewre' + getCookie('openLoop'))
+    }
   })
 }
 loadData()
 const doGet = async () => {
-  const ids = nums.value.filter(v => v.orderOn).map(v => v.id)
-  if (!ids.length) {
-    Toast.fail('请选择账号')
-    return
-  }
-  state.loading = true
-  const { data } = await GetTaskApi(ids).finally(() => {
+  state.cycleOrder = !state.cycleOrder
+  if (state.cycleOrder) {
+    loadGet()
+  } else {
+    clearTimeout(state.timer)
     state.loading = false
-  })
-  if (data) {
-    state.showGet = true
-    detail.value = data
   }
 }
+
+const loadGet = async () => {
+  try {
+    const ids = nums.value.filter(v => v.orderOn).map(v => v.id)
+    if (!ids.length) {
+      Toast.fail('请选择账号')
+      return
+    }
+    state.loading = true
+    const { data, code } = await GetTaskApi(ids)
+    if (code === 111 && state.cycleOrder) {
+      state.timer = setTimeout(() => {
+        loadGet()
+      }, 10000)
+    }
+    if (data) {
+      state.cycleOrder = false
+      clearTimeout(state.timer)
+      state.showGet = true
+      detail.value = data
+      state.loading = false
+    }
+  } catch (e) {
+    state.loading = false
+    state.cycleOrder = false
+    clearTimeout(state.timer)
+  }
+}
+// 销毁组件定时器
+onUnmounted(() => {
+  // 存储是否开启主动接单
+  setCookie('openLoop', state.cycleOrder)
+  clearTimeout(state.timer)
+})
 </script>
 
 <style lang="less" scoped>

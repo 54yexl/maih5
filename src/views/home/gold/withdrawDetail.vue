@@ -14,7 +14,7 @@
     >
       <div class="item" v-for="item in list" :key="item.ticketId">
         <div class="info">
-          <div class="name">提现人: {{ item.name || '无' }}</div>
+          <!-- <div class="name">提现人: {{ item.name || '无' }}</div> -->
           <div class="name">提现金额: {{ item.withdrawMoney || 0 }}</div>
           <div class="desc">提现时间：{{ item.createTime }}</div>
           <div class="desc">审核时间：{{ item.reviewTime || '暂未审核' }}</div>

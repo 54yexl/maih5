@@ -123,6 +123,7 @@ import moment from 'moment'
 import { useRouter } from 'vue-router'
 import { reactive, ref } from 'vue'
 import { complaintListApi, complaintReplayApi } from '@/api/home'
+import { Toast } from 'vant'
 const router = useRouter()
 const state = reactive({
   loading: false,
@@ -159,9 +160,10 @@ const loadData = async init => {
   state.finished = true
 }
 const onFormSubmit = async value => {
-  const { code } = await complaintReplayApi(appealForm.value)
+  const { code, msg } = await complaintReplayApi(appealForm.value)
   if (code === 0) {
     state.formshow = false
+    Toast.success(msg)
   }
 }
 </script>

@@ -13,9 +13,11 @@
     @click-tab="onClickTab"
   >
     <van-tab
-      v-for="tab in tabList"
+      v-for="tab in state.tabList"
       :key="tab.key"
-      :title="tab.label"
+      :title="`${tab.label}${
+        tab.key === 0 || tab.key === 10 ? '' : '(' + tab.nums + ')'
+      }`"
       :name="tab.key"
     >
       <van-list
@@ -65,7 +67,12 @@
                 <div>垫付：{{ item.goodsPrice }}</div>
                 <div class="num">账号：{{ item.id }}</div>
               </div>
-              <div class="last">{{ item.returnTypeStr }}</div>
+              <div class="last price">
+                <div>{{ item.returnTypeStr }}</div>
+                <div class="num" v-show="item.returnTypeStr === '商家返款'">
+                  {{ item.returnStr }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -76,8 +83,8 @@
 <script setup>
 // import moment from 'moment'
 import { useRouter } from 'vue-router'
-import { reactive } from 'vue'
-import { orderListApi } from '@/api/home'
+import { reactive, onMounted } from 'vue'
+import { orderListApi, orderTotalApi } from '@/api/home'
 const router = useRouter()
 const state = reactive({
   activeTab: 0,
@@ -85,47 +92,77 @@ const state = reactive({
   finished: false,
   list: [],
   page: 0,
-  pageSize: 10
+  pageSize: 10,
+  tabList: [
+    {
+      label: '全部',
+      key: 0,
+      nums: 0
+    },
+    {
+      label: '待审核',
+      key: 1,
+      nums: 0
+    },
+    {
+      label: '待操作',
+      key: 2,
+      nums: 0
+    },
+    {
+      label: '待返款',
+      key: 3,
+      nums: 0
+    },
+    {
+      label: '待评价',
+      key: 4,
+      nums: 0
+    },
+    {
+      label: '待确认',
+      key: 5,
+      nums: 0
+    },
+    {
+      label: '待追评',
+      key: 6,
+      nums: 0
+    },
+    {
+      label: '预售订单',
+      key: 7,
+      nums: 0
+    },
+    {
+      label: '已完成',
+      key: 10,
+      nums: 0
+    },
+    {
+      label: '异常订单',
+      key: 11,
+      nums: 0
+    }
+  ]
 })
-// 0.全部 1.待审核 2.待操作 3.待返款 4.待好评 5.待确认 6.待追评 7.预售订单 10.已完成
-const tabList = [
-  {
-    label: '全部',
-    key: 0
-  },
-  {
-    label: '待审核',
-    key: 1
-  },
-  {
-    label: '待操作',
-    key: 2
-  },
-  {
-    label: '待返款',
-    key: 3
-  },
-  {
-    label: '待评价',
-    key: 4
-  },
-  {
-    label: '待确认',
-    key: 5
-  },
-  {
-    label: '待追评',
-    key: 6
-  },
-  {
-    label: '预售订单',
-    key: 7
-  },
-  {
-    label: '已完成',
-    key: 10
+// 0.全部 1.待审核 2.待操作 3.待返款 4.待好评 5.待确认 6.待追评 7.预售订单 10.已完成 11.异常
+
+onMounted(async () => {
+  const { data } = await orderTotalApi()
+  if (data) {
+    state.tabList.map(v => {
+      v.key === 1 ? (v.nums = data.waitAuditTotal) : ''
+      v.key === 2 ? (v.nums = data.runningTaskTotal) : ''
+      v.key === 3 ? (v.nums = data.returnMoneyTotal) : ''
+      v.key === 4 ? (v.nums = data.commentTotal) : ''
+      v.key === 5 ? (v.nums = data.confirmTotal) : ''
+      v.key === 6 ? (v.nums = data.appendCommentTotal) : ''
+      v.key === 7 ? (v.nums = data.delayedBuyTotal) : ''
+      v.key === 11 ? (v.nums = data.exceptionTotal) : ''
+    })
   }
-]
+})
 const onClickTab = ({ name }) => {
   state.activeTab = name
   loadData(1)
@@ -168,10 +205,10 @@ const loadData = async init => {
   border-radius: 10px;
   padding: 30px;
   .blur {
-    -webkit-filter: blur(3px); /* Chrome, Opera */
-    -moz-filter: blur(3px);
-    -ms-filter: blur(3px);
-    filter: blur(3px);
+    -webkit-filter: blur(2px); /* Chrome, Opera */
+    -moz-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
   }
   .goods {
     display: flex;

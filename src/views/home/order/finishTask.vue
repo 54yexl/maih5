@@ -9,12 +9,12 @@
     <van-form label-width="6em" @submit="onSubmit">
       <van-field
         v-model="form.orderNo"
-        placeholder="请输入平台订单号"
-        label="平台订单号"
+        placeholder="请输入淘宝订单编号"
+        label="淘宝订单编号"
         :rules="[
           {
             required: true,
-            message: '请输入平台订单号'
+            message: '请输入淘宝订单编号'
           }
         ]"
       />

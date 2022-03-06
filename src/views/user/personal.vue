@@ -13,7 +13,9 @@
             {{ state.nikeName || state.phone || '无' }} <van-icon name="edit" />
           </h4>
           <p>ID：{{ state.id || '无' }}</p>
-          <div>邀请码：{{ state.promotePermission ? state.inviteCoe : '无权限' }}</div>
+          <div>
+            邀请码：{{ state.promotePermission ? state.inviteCoe : '无权限' }}
+          </div>
         </div>
       </div>
       <div class="bottom">
@@ -62,7 +64,7 @@
         />
         <van-grid-item
           icon="warning-o"
-          text="申诉"
+          :text="`申诉(${complaintTotal})`"
           icon-color="#989898"
           to="/appeal/list"
         />
@@ -147,8 +149,10 @@
 import { useRouter } from 'vue-router'
 import { ref, onMounted, reactive } from 'vue'
 import { InfoApi, infoModifyApi } from '@/api/user'
+import { orderTotalApi } from '@/api/home'
 const router = useRouter()
 const state = ref({})
+const complaintTotal = ref(0) //申诉订单量
 const nickForm = ref({
   nikeName: undefined
 })
@@ -162,6 +166,8 @@ onMounted(() => {
 const getInfo = async () => {
   const { data } = await InfoApi()
   data ? (state.value = data) : ''
+  const { data: nums } = await orderTotalApi()
+  complaintTotal.value = nums.complaintTotal
 }
 const onSubmit = async value => {
   const { code } = await infoModifyApi(nickForm.value)

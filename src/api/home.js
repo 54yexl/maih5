@@ -43,15 +43,21 @@ export const complaintListApi = params =>
     method: 'GET',
     params
   })
-export const complaintReplayApi = data =>
+export const complaintReplayApi = params =>
   request({
     url: `${serviceBase.API}/order/complaint/replay`,
     method: 'post',
-    data
+    params
   })
 export const orderListApi = params =>
   request({
     url: `${serviceBase.API}/order/list`,
+    method: 'GET',
+    params
+  })
+export const orderTotalApi = params =>
+  request({
+    url: `${serviceBase.API}/order/total`,
     method: 'GET',
     params
   })
