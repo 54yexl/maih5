@@ -10,13 +10,12 @@
     <div class="downtme">
       <div
         v-if="
-          moment(new Date()).valueOf() - moment(detail.beginTime).valueOf() >
-          0
+          moment(detail.beginTime).add(1,'hours').valueOf() - moment(new Date()).valueOf() > 0
         "
       >
         <van-count-down
           :time="
-            moment(new Date()).valueOf() - moment(detail.beginTime).valueOf()
+            moment(detail.beginTime).add(1,'hours').valueOf() - moment(new Date()).valueOf()
           "
           format="HH 时 mm 分 ss 秒"
         />
@@ -352,10 +351,10 @@ const copy = async val => {
     font-size: 30px;
     text-align: center;
     color: #fff;
-    /deep/ .van-count-down{
+    /deep/ .van-count-down {
       color: #fff;
     }
-    p>{
+    p > {
       padding-top: 15px;
     }
   }
