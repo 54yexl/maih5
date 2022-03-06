@@ -60,9 +60,9 @@
       >
     </van-tabbar>
     <!-- qq微信悬浮 -->
-    <div class="fixqq">
+    <a class="fixqq" target="_blank" :href="configData">
       <img src="@/assets/qq.png" />
-    </div>
+    </a>
     <!-- 通告 -->
     <van-popup
       class="hotel-detail-dialog"
@@ -89,9 +89,10 @@
 </template>
 
 <script setup>
-import { onMounted, reactive } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { noticeApi } from '@/api/home'
 import { useRouter } from 'vue-router'
+import { configApi } from '@/api/gold'
 const router = useRouter()
 const state = reactive({
   loading: true,
@@ -99,6 +100,7 @@ const state = reactive({
   notice: {},
   showNotice: false
 })
+const configData = ref(null)
 const tabList = [
   {
     key: '1',
@@ -145,6 +147,14 @@ onMounted(async () => {
     state.showNotice = true
   }
 })
+onMounted(() => {
+  loadConfig()
+})
+const loadConfig = async () => {
+  const { data } = await configApi()
+  configData.value = `http://wpa.qq.com/msgrd?v=1&uin=${data.kefuQq}&site=qq&menu=yes`
+  
+}
 </script>
 
 <style lang="less" scoped>

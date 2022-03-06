@@ -25,3 +25,9 @@ export const wmoneyTotalApi = params =>
     method: 'GET',
     params
   })
+export const configApi = params =>
+  request({
+    url: `${serviceBase.API}/config`,
+    method: 'GET',
+    params
+  })

@@ -2,7 +2,11 @@
   <van-nav-bar left-arrow title="提现" fixed @clickLeft="() => router.go(-1)" />
 
   <div class="content">
-    <h2>*提现不满100，收2元手续费</h2>
+    <h2>
+      *提现不满{{ configData.withdrawMoneyMin || 0 }}，收{{
+        configData.withdrawMoneyService || 0
+      }}元手续费
+    </h2>
     <van-form label-width="6em" @submit="onSubmit">
       <van-field
         v-model="form.money"
@@ -39,8 +43,8 @@
   </div>
 </template>
 <script setup>
-import { withdrawApi } from '@/api/gold'
-import { reactive, ref } from 'vue'
+import { withdrawApi, configApi } from '@/api/gold'
+import { reactive, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Toast } from 'vant'
 
@@ -48,6 +52,7 @@ const validatorPhone = val => /^1[3|4|5|6|7|8][0-9]{9}$/.test(val)
 const router = useRouter()
 
 const loading = ref(false)
+const configData = ref({})
 const form = reactive({
   loginPassword: undefined,
   money: null
@@ -60,6 +65,13 @@ const onSubmit = async () => {
   })
   !code ? Toast.success('提现已提交，请耐心等待客服审核到账。') : ''
   router.push({ path: '/home' })
+}
+onMounted(() => {
+  loadConfig()
+})
+const loadConfig = async () => {
+  const { data } = await configApi()
+  configData.value = data
 }
 </script>
 
