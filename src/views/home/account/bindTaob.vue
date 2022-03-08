@@ -25,7 +25,7 @@
           <van-button
             size="small"
             type="success"
-            @click="window.local_obj.begin()"
+            @click="goTaobao"
           >
             点击登录验证
           </van-button>
@@ -244,6 +244,10 @@ const onSubmit = async () => {
     loading.value = false
   })
   router.push({ path: '/account/bind' })
+}
+const goTaobao = () => {
+  console.log(window)
+  window?.local_obj?.begin()
 }
 </script>
 

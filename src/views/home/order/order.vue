@@ -65,7 +65,7 @@
               </div>
               <div class="price">
                 <div>垫付：{{ item.goodsPrice }}</div>
-                <div class="num">账号：{{ item.id }}</div>
+                <div class="num">账号：{{ item.account }}</div>
               </div>
               <div class="last price">
                 <div>{{ item.returnTypeStr }}</div>

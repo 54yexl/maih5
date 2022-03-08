@@ -29,7 +29,7 @@
               }}
             </div>
           </div>
-          <div>购买数量：{{ detail.num || 0 }}</div>
+          <div>购买数量：{{ detail.buyNum || 0 }}</div>
         </div>
       </div>
       <div class="goods-total">

@@ -27,6 +27,7 @@ export default defineComponent({
     const afterRead = async file => {
       const formData = new FormData()
       formData.append('file', file.file)
+      console.log(file.file)
       const { data } = await uploadImgApi(formData)
       ctx.emit('update:modelValue', data.join())
     }
