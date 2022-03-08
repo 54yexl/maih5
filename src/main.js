@@ -13,5 +13,5 @@ setupPlugins(app)
 // setupStore(app)
 
 setupRouter(app)
-const vConsole = new VConsole()
+// const vConsole = new VConsole()
 app.mount('#app')
