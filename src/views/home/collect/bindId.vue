@@ -68,7 +68,7 @@
           <maiUpload v-model="form.selfPic" :max-count="1" />
         </template>
       </van-field>
-      <van-field
+      <!-- <van-field
         name="holdingIdCardPic"
         label="手持身份证照"
         :rules="[{ required: true, message: '请上传手持身份证照' }]"
@@ -76,7 +76,7 @@
         <template #input>
           <maiUpload v-model="form.holdingIdCardPic" :max-count="1" />
         </template>
-      </van-field>
+      </van-field> -->
       <div class="sub">
         <van-button
           block
@@ -116,7 +116,7 @@ const loading = ref(false)
 const form = ref({
   sex: undefined,
   address: undefined,
-  holdingIdCardPic: undefined,
+  // holdingIdCardPic: undefined,
   idCard: undefined,
   idCardPic: undefined,
   realName: undefined,

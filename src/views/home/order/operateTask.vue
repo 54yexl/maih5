@@ -10,12 +10,15 @@
     <div class="downtme">
       <div
         v-if="
-          moment(detail.beginTime).add(1,'hours').valueOf() - moment(new Date()).valueOf() > 0
+          moment(detail.beginTime).add(1, 'hours').valueOf() -
+            moment(new Date()).valueOf() >
+          0
         "
       >
         <van-count-down
           :time="
-            moment(detail.beginTime).add(1,'hours').valueOf() - moment(new Date()).valueOf()
+            moment(detail.beginTime).add(1, 'hours').valueOf() -
+            moment(new Date()).valueOf()
           "
           format="HH 时 mm 分 ss 秒"
         />
@@ -44,6 +47,14 @@
         </div>
       </div>
     </div>
+    <h3 v-show="detail.matchingGoods === 1">搭配商品</h3>
+    <van-grid :column-num="3" v-show="detail.matchingGoods === 1">
+      <van-grid-item v-for="item in detail.goodsOptionExted" :key="item.id">
+        <van-image :src="item.pic1" :width="100" :height="100" class="blur" />
+        <!-- <div style="padding: 10px 0; line-height: 1.3">{{ item.value }}</div> -->
+        <div style="padding: 10px 0 0">商品价格：{{ item.goodsPrice }}</div>
+      </van-grid-item>
+    </van-grid>
 
     <h3>任务要点</h3>
     <p class="tips">
@@ -242,6 +253,9 @@
       </van-form>
     </div>
 
+    <h3 v-show="detail.messageWarn">商家要求</h3>
+    <div class="tips" v-show="detail.messageWarn">{{ detail.messageWarn }}</div>
+
     <h3>操作要求</h3>
     <!-- <div class="tips">
       *浏览商品数量：{{
@@ -256,7 +270,7 @@
       }}
     </div>
     <div class="tips">
-      *是否搭配商品：{{ detail.goodsCompareNum === 1 ? '是' : '否' }}
+      *是否搭配商品：{{ detail.matchingGoods === 1 ? '是' : '否' }}
     </div>
     <div
       class="tips"
@@ -344,6 +358,7 @@ const copy = async val => {
 .content {
   background: #fff;
   padding: 90px 0px 0;
+  font-size: 25px;
   .downtme {
     background: linear-gradient(270deg, #0acffe 0%, #495aff 100%);
     // box-shadow: 0px 5px 10px rgb(0 0 0 0.5);
@@ -415,6 +430,12 @@ const copy = async val => {
         font-size: 28px;
       }
     }
+  }
+  .blur {
+    -webkit-filter: blur(2px); /* Chrome, Opera */
+    -moz-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
   }
 }
 </style>

@@ -84,7 +84,7 @@ const onSubmit = async () => {
     loading.value = false
   })
   if (code !== 0) return
-  router.go(-1)
+  router.push('/home/order')
 }
 </script>
 <style lang="less" scoped>
