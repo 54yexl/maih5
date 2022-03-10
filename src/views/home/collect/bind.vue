@@ -10,8 +10,18 @@
   <van-cell
     title="*身份证"
     class="labelred"
-    :value="info.status === 1 ? '已绑定' : '未绑定'"
-    :to="info.status === 1 ? '' : '/collect/bindId'"
+    :value="
+      info.realStatus === 0
+        ? '未绑定'
+        : info.realStatus === 1
+        ? '待审核'
+        : info.realStatus === 2
+        ? '已审核'
+        : info.realStatus === 3
+        ? '审核失败'
+        : '无'
+    "
+    :to="info.realStatus === 0 || info.realStatus === 3 ? '/collect/bindId' : ''"
   />
   <van-cell
     class="labelred"

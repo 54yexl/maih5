@@ -31,8 +31,8 @@
     <div class="goods">
       <van-image
         :src="detail.goodsPic"
-        :width="100"
-        :height="100"
+        :width="110"
+        :height="110"
         class="blur"
       />
       <div class="goods-name">
@@ -42,6 +42,7 @@
         <div class="goods-name-txt">支付金额：{{ detail.goodsMoney || 0 }}</div>
         <div>店铺销量：{{ detail.commission }}</div>
         <div>购买数量：{{ detail.buyNum }}</div>
+        <div>规格：{{ detail.goodsSpec || '默认随机' }}</div>
         <div class="last">
           {{ detail.screenFlag === 1 ? '需要截图任务' : '无截图任务' }}
         </div>
@@ -50,7 +51,7 @@
     <h3 v-show="detail.matchingGoods === 1">搭配商品</h3>
     <van-grid :column-num="3" v-show="detail.matchingGoods === 1">
       <van-grid-item v-for="item in detail.goodsOptionExted" :key="item.id">
-        <van-image :src="item.pic1" :width="100" :height="100" class="blur" />
+        <van-image :src="item.pic1" :width="100" :height="100" />
         <!-- <div style="padding: 10px 0; line-height: 1.3">{{ item.value }}</div> -->
         <div style="padding: 10px 0 0">商品价格：{{ item.goodsPrice }}</div>
       </van-grid-item>
@@ -430,12 +431,6 @@ const copy = async val => {
         font-size: 28px;
       }
     }
-  }
-  .blur {
-    -webkit-filter: blur(2px); /* Chrome, Opera */
-    -moz-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
   }
 }
 </style>
