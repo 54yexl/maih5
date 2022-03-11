@@ -84,7 +84,7 @@
       </template>
     </van-cell-group>
   </van-popup>
-   <!-- 申诉表单 -->
+  <!-- 申诉表单 -->
   <van-popup
     class="hotel-detail-dialog"
     :style="{ 'border-radius': '10px', width: '90%', top: '45%' }"
@@ -95,7 +95,11 @@
   >
     <div class="header">申诉回复</div>
     <van-divider style="margin: 0" />
-    <van-form label-width="6em" @submit="onFormSubmit" style="padding: 0 20px 20px">
+    <van-form
+      label-width="6em"
+      @submit="onFormSubmit"
+      style="padding: 0 20px 20px"
+    >
       <van-field
         v-model="appealForm.replayContent"
         placeholder="请输入申诉内容"
@@ -107,11 +111,7 @@
         :rules="[{ required: true, message: '请输入申诉内容' }]"
       />
       <div class="sub">
-        <van-button
-          block
-          type="primary"
-          native-type="submit"
-        >
+        <van-button block type="primary" native-type="submit">
           确认提交
         </van-button>
       </div>
@@ -139,25 +139,28 @@ const appealForm = ref({
   replayContent: undefined,
   id: undefined
 })
-const loadData = async init => {
+const loadData = init => {
   !init
     ? state.page++
     : ((state.finished = false),
       (state.list = []),
       (state.page = 1),
       (state.pageSize = 10),
-      (state.loading = false))
-  const { data } = await complaintListApi({
+      (state.loading = true))
+  complaintListApi({
     page: state.page,
     pageSize: state.pageSize
-  }).catch(() => {
-    state.loading = false
   })
-  state.list.push(...data)
-  if (state.pageSize > data.length) {
-    state.finished = true
-  }
-  state.finished = true
+    .catch(() => {
+      state.loading = false
+    })
+    .then(({ data }) => {
+      state.list.push(...data)
+      if (state.pageSize > data.length) {
+        state.finished = true
+      }
+      state.loading = false
+    })
 }
 const onFormSubmit = async value => {
   const { code, msg } = await complaintReplayApi(appealForm.value)

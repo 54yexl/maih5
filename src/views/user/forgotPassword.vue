@@ -78,7 +78,7 @@
   </div>
 </template>
 <script setup>
-import { forgetSendCodeApi, forgetKeyApi,captchaApi } from '@/api/user'
+import { forgetSendCodeApi, forgetKeyApi, captchaApi } from '@/api/user'
 import { reactive, ref } from 'vue'
 import { Toast } from 'vant'
 import { useRouter } from 'vue-router'
@@ -98,7 +98,7 @@ const form = reactive({
 })
 
 const onSubmit = async () => {
-  if(form.newpassword !== form.password){
+  if (form.newpassword !== form.password) {
     Toast.fail('俩次密码不一致，请确认')
     return
   }
@@ -108,7 +108,7 @@ const onSubmit = async () => {
 }
 
 const sendCode = async () => {
-  const code = await forgetSendCodeApi({
+  const { code } = await forgetSendCodeApi({
     phone: form.phone,
     captcha: form.captcha
   })

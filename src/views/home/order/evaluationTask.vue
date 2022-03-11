@@ -12,7 +12,7 @@
       <van-image :src="detail.goodsPic" :width="100" :height="100" />
       <div class="goods-name">
         <div>搜索价格：{{ detail.goodsMoney || 0 }}</div>
-        <div>店铺销量：{{ detail.commission }}</div>
+        <div>佣金：{{ detail.commission }}</div>
         <div>购买数量：{{ detail.buyNum }}</div>
         <div class="last">
           {{ detail.screenFlag === 1 ? '需要截图任务' : '无截图任务' }}
@@ -45,6 +45,7 @@
       <van-button
         type="primary"
         native-type="submit"
+        size="mini"
         @click="copy(evalDetail.value)"
       >
         复制评价内容

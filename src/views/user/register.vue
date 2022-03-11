@@ -111,7 +111,7 @@ const onSubmit = async () => {
 }
 
 const sendCode = async () => {
-  const code = await sendCodeApi({
+  const { code } = await sendCodeApi({
     phone: form.phone,
     captcha: form.captcha
   })

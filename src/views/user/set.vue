@@ -2,7 +2,12 @@
   <van-nav-bar left-arrow title="设置" fixed @clickLeft="() => router.go(-1)" />
 
   <div class="content">
-    <van-cell title="密码" is-link value="修改密码" @click="router.push('/user/modyPassword')"/>
+    <van-cell
+      title="密码"
+      is-link
+      value="修改密码"
+      @click="router.push('/user/modyPassword')"
+    />
     <div class="sub">
       <van-button
         block
@@ -28,8 +33,8 @@ const loading = ref(false)
 
 const onSubmit = async () => {
   loading.value = true
-  const {code} = await memberOutApi()
-  if(code!==0) return
+  const { code } = await memberOutApi()
+  if (code !== 0) return
   await logout().finally(() => {
     loading.value = false
     router.push('/user/login')

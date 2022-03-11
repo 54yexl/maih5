@@ -24,11 +24,7 @@
         finished-text="没有更多了"
         @load="loadData"
       >
-        <div
-          class="item"
-          v-for="item in state.list"
-          :key="item.memberId"
-        >
+        <div class="item" v-for="item in state.list" :key="item.memberId">
           <div class="price">
             <div>订单ID：{{ item.sourceId || '无' }}</div>
             <div class="num" style="color: #999">{{ item.optTime }}</div>
@@ -84,26 +80,29 @@ const onClickTab = ({ name }) => {
   state.activeTab = name
   loadData(1)
 }
-const loadData = async init => {
+const loadData = init => {
   !init
     ? state.page++
     : ((state.finished = false),
       (state.list = []),
       (state.page = 1),
       (state.pageSize = 10),
-      (state.loading = false))
-  const { data } = await wmoneyListApi({
+      (state.loading = true))
+  wmoneyListApi({
     page: state.page,
     pageSize: state.pageSize,
     type: state.activeTab
-  }).catch(() => {
-    state.loading = false
   })
-  state.list.push(...data)
-  if (state.pageSize > data.length) {
-    state.finished = true
-  }
-  state.finished = true
+    .then(({ data }) => {
+      state.list.push(...data)
+      if (state.pageSize > data.length) {
+        state.finished = true
+      }
+      state.loading = false
+    })
+    .catch(() => {
+      state.loading = false
+    })
 }
 </script>
 <style lang="less" scoped>

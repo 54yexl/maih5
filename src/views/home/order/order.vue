@@ -46,7 +46,7 @@
             />
             <div class="goods-name">
               <div class="price">
-                <div>任务ID：{{ item.id }}</div>
+                <div>订单ID：{{ item.id }}</div>
                 <div class="num" style="color: #999">
                   {{ item.receiveTime }}
                 </div>
@@ -167,26 +167,30 @@ const onClickTab = ({ name }) => {
   state.activeTab = name
   loadData(1)
 }
-const loadData = async init => {
+const loadData = init => {
   !init
     ? state.page++
     : ((state.finished = false),
       (state.list = []),
       (state.page = 1),
       (state.pageSize = 10),
-      (state.loading = false))
-  const { data } = await orderListApi({
+      (state.loading = true))
+  orderListApi({
     page: state.page,
     pageSize: state.pageSize,
     status: state.activeTab
-  }).catch(() => {
-    state.loading = false
   })
-  state.list.push(...data)
-  if (state.pageSize > data.length) {
-    state.finished = true
-  }
-  state.finished = true
+    .catch(() => {
+      state.loading = false
+    })
+    .then(({ data }) => {
+      state.list.push(...data)
+      if (state.pageSize > data.length) {
+        state.finished = true
+      }
+      state.loading = false
+    })
+
   // setTimeout(() => {
   //   for (let i = 0; i < 10; i++) {
   //     state.list.push(state.list.length + 1);

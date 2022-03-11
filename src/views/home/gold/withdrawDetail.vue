@@ -18,7 +18,9 @@
           <div class="name">提现金额: {{ item.withdrawMoney || 0 }}</div>
           <div class="desc">提现时间：{{ item.createTime }}</div>
           <div class="desc">审核时间：{{ item.reviewTime || '暂未审核' }}</div>
-          <div class="desc" v-show="item.failReason">拒绝原因: {{ item.failReason }}</div>
+          <div class="desc" v-show="item.failReason">
+            拒绝原因: {{ item.failReason }}
+          </div>
         </div>
         <van-button plain hairline type="primary">{{
           item.status === 0
@@ -45,26 +47,27 @@ export default defineComponent({
       loading: false,
       finished: false,
       list: [],
-
       page: 0,
       pageSize: 10
     })
 
-    const loadData = async init => {
+    const loadData = init => {
       if (!init) {
         state.page++
       }
-      const { data } = await withdrawListApi({
+      withdrawListApi({
         page: state.page,
         pageSize: state.pageSize
-      }).finally(() => {
-        state.loading = false
       })
-      state.list.push(...data)
-
-      if (state.pageSize > data.length) {
-        state.finished = true
-      }
+        .catch(() => {
+          state.loading = false
+        })
+        .then(({ data }) => {
+          state.list.push(...data)
+          if (state.pageSize > data.length) {
+            state.finished = true
+          }
+        })
     }
 
     return {

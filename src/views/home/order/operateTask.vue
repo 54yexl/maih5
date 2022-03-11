@@ -40,7 +40,7 @@
           搜索展示价格：{{ detail.searchPrice || 0 }}
         </div>
         <div class="goods-name-txt">支付金额：{{ detail.goodsMoney || 0 }}</div>
-        <div>店铺销量：{{ detail.commission }}</div>
+        <div>佣金：{{ detail.commission }}</div>
         <div>购买数量：{{ detail.buyNum }}</div>
         <div>规格：{{ detail.goodsSpec || '默认随机' }}</div>
         <div class="last">
