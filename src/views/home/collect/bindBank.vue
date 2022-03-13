@@ -90,7 +90,7 @@ const form = ref({
 
 const onBankConfirm = value => {
   console.log(value)
-  form.bankName = value
+  form.value.bankName = value
   showBank.value = false
 }
 onMounted(async () => {

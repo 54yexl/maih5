@@ -67,6 +67,7 @@
       :value="detail.screenFlag === 1 ? '需要截图任务' : '无截图任务'"
     />
     <!-- entryShopType 1.2.3对应entryShopTypeOptionExted value字段，4直接打开 6是取value图片展示 99五张图&备注-->
+    <!-- entryShopType:1.搜索关键词 2.搜索店铺 3.直通车 4.直接打开 5.淘口令 6.二维码 99.其它渠道 -->
     <van-cell
       v-show="detail.entryShopType !== 4"
       :title="
@@ -76,26 +77,30 @@
           ? '搜索店铺'
           : detail.entryShopType === 3
           ? '直通车'
-          : detail.entryShopType === 4
-          ? '直接打开'
           : detail.entryShopType === 5
-          ? '直接打开'
+          ? '淘口令'
           : detail.entryShopType === 6
           ? '二维码'
           : detail.entryShopType === 99
-          ? '其它渠道'
+          ? '商家要求'
           : ''
       "
-      :value="detail?.entryShopTypeOptionExted?.value"
     >
-      {{ detail?.entryShopTypeOptionExted?.value }}
+      {{ detail.entryShopType !==6 ? (detail?.entryShopTypeOptionExted?.value) : ''}}
       <van-button
-        v-show="detail.entryShopType === 1"
+        v-show="detail.entryShopType < 6"
         type="primary"
         size="mini"
         @click="copy(detail?.entryShopTypeOptionExted?.value)"
         >复制</van-button
       >
+      <van-image
+        v-show="detail.entryShopType === 6"
+        :src="detail?.entryShopTypeOptionExted?.value"
+        :width="110"
+        :height="110"
+        
+      />
     </van-cell>
     <div class="tips" v-show="detail.entryShopType === 99">
       <van-image
@@ -135,7 +140,7 @@
       :url="detail?.entryShopTypeOptionExted?.value"
     />
 
-    <!-- entryShopType:1.搜索关键词 2.搜索店铺 3.直通车 4.直接打开 5.淘口令 6.二维码 99.其它渠道 -->
+    
 
     <!-- <div class="tips">
       收藏宝贝（把宝贝加入收藏夹）<br />
