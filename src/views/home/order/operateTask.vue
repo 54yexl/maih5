@@ -137,8 +137,17 @@
     <van-cell
       v-show="detail.entryShopType === 4"
       is-link
-      :url="detail?.entryShopTypeOptionExted?.value"
-    />
+      title="直接打开"
+      :url="detail.goodsUrl"
+    >
+    {{ detail.goodsUrl }}
+      <van-button
+        type="primary"
+        size="mini"
+        @click.stop="copy(detail.goodsUrl)"
+        >复制</van-button
+      >
+    </van-cell>
 
     
 
