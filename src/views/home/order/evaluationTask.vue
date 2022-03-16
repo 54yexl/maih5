@@ -40,9 +40,12 @@
     </div>
 
     <h3>商家要求</h3>
-    <van-cell title="评价内容" :value="evalDetail.value" />
-    <div style="text-align:right; padding: 20px 20px 0">
+    <van-cell title="评价内容">
+      <div>{{ evalDetail.value }}</div>
       <van-button
+        v-if="
+          evalDetail.value !== '自由发挥' && evalDetail.value !== '五星好评'
+        "
         type="primary"
         native-type="submit"
         size="mini"
@@ -50,7 +53,7 @@
       >
         复制评价内容
       </van-button>
-    </div>
+    </van-cell>
     <div
       class="tips"
       v-show="
