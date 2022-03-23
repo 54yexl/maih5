@@ -67,6 +67,9 @@
                 <div>垫付：{{ item.goodsPrice }}</div>
                 <div class="num">账号：{{ item.account }}</div>
               </div>
+              <div class="price" v-show="tab.key === 11">
+                <div>异常说明：{{ item.remark || '无' }}</div>
+              </div>
               <div class="last price">
                 <div>{{ item.returnTypeStr }}</div>
                 <div class="num" v-show="item.returnTypeStr === '商家返款'">
