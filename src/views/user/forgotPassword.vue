@@ -83,7 +83,7 @@ import { reactive, ref } from 'vue'
 import { Toast } from 'vant'
 import { useRouter } from 'vue-router'
 
-const validatorPhone = val => /^1[3|4|5|6|7|8][0-9]{9}$/.test(val)
+const validatorPhone = val => /^1[3|4|5|6|7|8|9][0-9]{9}$/.test(val)
 const router = useRouter()
 
 const time = ref(0)

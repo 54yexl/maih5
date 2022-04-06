@@ -159,6 +159,10 @@
       下单支付（提交支付宝上面的账单截图）<br />
     </div> -->
 
+    <h3 v-show="detail.messageWarn">商家要求</h3>
+    <div class="tips" v-show="detail.messageWarn">{{ detail.messageWarn }}</div>
+
+
     <h3>注意事项</h3>
     <div class="tips" style="color: #333">
       与商家聊天过程中切记不要出现“任务，做单，种菜”等词汇，按照正常购物流程和语气进行操作。
@@ -170,6 +174,12 @@
 
     <h3>任务步骤</h3>
     <div class="setp">第一步： 目标商品 货比多家</div>
+    <div class="tips">店铺名称（提示：{{ detail.shopName }}）</div>
+    <div class="tips">
+      由于部分店铺名称相似，请仔细核对，确保下单的店铺名称和要求的完全一致才能操作。<br />
+      拍错店铺需自行承担损失。<br />
+      旗舰店 ≠ 专卖店 ≠ 专营店 ≠ XX店
+    </div>
     <!-- 核对店铺 -->
     <van-form
       label-width="6em"
@@ -197,12 +207,6 @@
     </div>
     <div class="bot33">》任意点开多个非目标商品，慢慢浏览至底部</div>
     <div class="bot33">》找到目标商品图，填写目标商品店铺名验证</div>
-    <div class="tips">店铺名称（提示：{{ detail.shopName }}）</div>
-    <div class="tips">
-      由于部分店铺名称相似，请仔细核对，确保下单的店铺名称和要求的完全一致才能操作。<br />
-      拍错店铺需自行承担损失。<br />
-      旗舰店 ≠ 专卖店 ≠ 专营店 ≠ XX店
-    </div>
     <div class="setp">第二步：浏览目标商品图</div>
     <div class="bot33">
       》根据商品主图、价格、名称等找到目标商品，点击“进入店铺”按钮
@@ -268,8 +272,6 @@
       </van-form>
     </div>
 
-    <h3 v-show="detail.messageWarn">商家要求</h3>
-    <div class="tips" v-show="detail.messageWarn">{{ detail.messageWarn }}</div>
 
     <h3>操作要求</h3>
     <!-- <div class="tips">
