@@ -25,7 +25,6 @@ export default () => {
       proxy: {
         '/custom-api': {
           target: 'http://39.101.135.116',
-          listen: '80',
           changeOrigin: true,
           rewrite: path => path.replace(/^\/custom-api/, '')
         }
