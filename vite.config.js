@@ -24,7 +24,8 @@ export default () => {
       port: 2389,
       proxy: {
         '/custom-api': {
-          target: 'http://39.103.152.66:8080',
+          target: 'http://39.101.135.116',
+          listen: '80',
           changeOrigin: true,
           rewrite: path => path.replace(/^\/custom-api/, '')
         }
