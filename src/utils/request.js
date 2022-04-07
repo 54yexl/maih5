@@ -5,7 +5,11 @@ import router from '@/router'
 import { getCookie, logout } from '@/utils/user'
 
 const pendingRequestList = []
-const baseUrl = import.meta.env.VITE_APP_BASE_API
+console.log(process.env.NODE_ENV)
+const baseUrl =
+  process.env.NODE_ENV === 'production'
+    ? window?.location?.origin
+    : import.meta.env.VITE_APP_BASE_API
 
 // const baseUrl = '/custom-api'
 const instance = axios.create({

@@ -33,7 +33,7 @@ import { Toast } from 'vant'
 const router = useRouter()
 const routeQuery = useRoute()?.query
 const { toClipboard } = useClipboard()
-const goRegistry = `${window?.location?.origin}/#/Register?inviteCoe=${routeQuery?.inviteCoe}`
+const goRegistry = `${window?.location?.origin}${window?.location?.pathname}/#/user/register?inviteCoe=${routeQuery?.inviteCoe}`
 
 const loading = ref(false)
 
