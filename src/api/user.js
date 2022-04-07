@@ -24,8 +24,10 @@ export const registerApi = data =>
 // 图片验证码
 export const captchaApi = data => {
   return `${
-    import.meta.env.VITE_APP_BASE_API + serviceBase.API
-  }/code?${Math.random()}`
+    process.env.NODE_ENV === 'production'
+      ? window?.location?.origin
+      : import.meta.env.VITE_APP_BASE_API
+  }${serviceBase.API}/code?${Math.random()}`
 }
 // 登录
 export const loginApi = params =>
