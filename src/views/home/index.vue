@@ -8,10 +8,10 @@
     /> -->
 
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-      <van-swipe-item>1</van-swipe-item>
-      <van-swipe-item>2</van-swipe-item>
-      <van-swipe-item>3</van-swipe-item>
-      <van-swipe-item>4</van-swipe-item>
+      <van-swipe-item><img src="@/assets/1.jpg" /></van-swipe-item>
+      <van-swipe-item><img src="@/assets/2.jpg" /></van-swipe-item>
+      <van-swipe-item><img src="@/assets/3.jpg" /></van-swipe-item>
+      <van-swipe-item><img src="@/assets/4.jpg" /></van-swipe-item>
     </van-swipe>
 
     <van-grid :column-num="3" :border="false">
@@ -33,31 +33,41 @@
         padding: ' 0 50px'
       }"
     >
-      工作时间：09:00 - 20:00
+      工作时间：09:00 - 23:00
     </van-divider>
     <div class="share">
       <h3>邀请分成</h3>
       <!-- 每个元素的两侧间隔相等 -->
       <van-row type="flex" justify="space-around">
-        <van-col span="11"
-          ><img style="width: 100%" src="@/assets/home_friend.png"
-        /></van-col>
-        <van-col span="11"
-          ><img style="width: 100%" src="@/assets/home_shangjia.png"
-        /></van-col>
+        <van-col
+          span="11"
+          @click="
+            () => router.push('/share/friends?inviteCoe=' + infoData?.inviteCoe)
+          "
+        >
+          <img style="width: 100%" src="@/assets/home_friend.png" />
+        </van-col>
+        <van-col
+          span="11"
+          @click="
+            () => router.push('/share/friends?inviteCoe=' + infoData?.inviteCoe)
+          "
+        >
+          <img style="width: 100%" src="@/assets/home_shangjia.png" />
+        </van-col>
       </van-row>
     </div>
     <!-- 底部 -->
     <van-tabbar v-model="state.active">
-      <van-tabbar-item icon="home-o" name="home-o" color="#00255"
-        >首页</van-tabbar-item
-      >
-      <van-tabbar-item icon="gold-coin-o" name="gold-coin-o" to="/task"
-        >接单</van-tabbar-item
-      >
-      <van-tabbar-item icon="user-o" name="user-o" to="/user/personal"
-        >个人</van-tabbar-item
-      >
+      <van-tabbar-item icon="home-o" name="home-o" color="#00255">
+        首页
+      </van-tabbar-item>
+      <van-tabbar-item icon="gold-coin-o" name="gold-coin-o" to="/task">
+        接单
+      </van-tabbar-item>
+      <van-tabbar-item icon="user-o" name="user-o" to="/user/personal">
+        个人
+      </van-tabbar-item>
     </van-tabbar>
     <!-- qq微信悬浮 -->
     <a class="fixqq" target="_blank" :href="configData">
@@ -93,6 +103,7 @@ import { onMounted, reactive, ref } from 'vue'
 import { noticeApi } from '@/api/home'
 import { useRouter } from 'vue-router'
 import { configApi } from '@/api/gold'
+import { InfoApi } from '@/api/user'
 const router = useRouter()
 const state = reactive({
   loading: true,
@@ -101,6 +112,7 @@ const state = reactive({
   showNotice: false
 })
 const configData = ref(null)
+const infoData = ref({})
 const tabList = [
   {
     key: '1',
@@ -152,23 +164,27 @@ onMounted(() => {
 })
 const loadConfig = async () => {
   const { data } = await configApi()
+  const { data: info } = await InfoApi()
+  infoData.value = info
   configData.value = `http://wpa.qq.com/msgrd?v=1&uin=${data.kefuQq}&site=qq&menu=yes`
-  
 }
 </script>
 
 <style lang="less" scoped>
 .content {
   height: 100vh;
-  // background: url('@/assets/user/home_bg.png');
-  // background-size: 100% 100%;
   .my-swipe {
     .van-swipe-item {
       color: #fff;
       font-size: 20px;
-      line-height: 350px;
       text-align: center;
-      background-color: #39a9ed;
+      // line-height: 350px;
+      // background-color: #39a9ed;
+      // padding: 50px 0;
+      img {
+        width: 100%;
+        display: block;
+      }
     }
   }
   .share {

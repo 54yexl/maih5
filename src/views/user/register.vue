@@ -16,6 +16,7 @@
           }
         ]"
       />
+      <h2 class="tips">*账户信息与银行卡手机号一致！！！</h2>
       <van-field
         v-model="form.captcha"
         placeholder="请输入图形验证码"
@@ -124,6 +125,13 @@ const sendCode = async () => {
 .content {
   height: 100vh;
   background: #fff;
+  .tips {
+    font-size: 25px;
+    padding: 20px 40px 32px;
+    color: red;
+    line-height: 1.5;
+    background: #fff;
+  }
   h2 {
     font-size: 48px;
     padding: 120px 40px 32px;

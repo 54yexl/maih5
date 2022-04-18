@@ -9,7 +9,7 @@ export const GetTaskApi = params =>
   })
 export const TaskListApi = urlParams =>
   request({
-    url: `${serviceBase.API}/account/list`,
+    url: `${serviceBase.API}/account/list?:status`,
     method: 'get',
     urlParams
   })
