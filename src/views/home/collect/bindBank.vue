@@ -49,13 +49,24 @@
         input-align="right"
         :rules="[{ required: true, message: '请输入开户行姓名' }]"
       />
-      <van-field
+      <!-- <van-field
         v-model="form.bankAddress"
         placeholder="请选择开户行地"
         label="开户行地"
         input-align="right"
         :rules="[{ required: true, message: '请选择开户行地' }]"
+      /> -->
+      <van-field
+        v-model="areaname"
+        placeholder="请选择开户行地"
+        label="开户行地"
+        input-align="right"
+        is-link
+        readonly
+        @click="showArea = true"
+        :rules="[{ required: true, message: '请选择开户行地' }]"
       />
+      <address-poup v-model="showArea" @changeAdressVal="onAreaConfirm" />
       <div class="sub">
         <van-button
           block
@@ -73,7 +84,8 @@
 <script setup>
 import { getBankApi, setBankApi } from '@/api/user'
 import { bankJson } from '@/utils/staticJson.js'
-import { onMounted, ref } from 'vue'
+import addressPoup from '@/components/address/index.vue'
+import { onMounted, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
 const validatorPhone = val => /^1[3|4|5|6|7|8|9][0-9]{9}$/.test(val)
@@ -81,11 +93,14 @@ const router = useRouter()
 const loading = ref(false)
 const showBank = ref(false)
 const form = ref({
-  bankAddress: undefined,
+  // bankAddress: undefined,
   bankBranch: undefined,
   bankName: undefined,
   bankNum: undefined,
-  name: undefined
+  name: undefined,
+  bankProvince: undefined,
+  bankCity: undefined,
+  bankRegion: undefined
 })
 
 const onBankConfirm = value => {
@@ -93,6 +108,23 @@ const onBankConfirm = value => {
   form.value.bankName = value
   showBank.value = false
 }
+
+
+const showArea = ref(false)
+const areaname = computed(() => {
+  if (form.value.bankProvince) {
+    return `${form.value.bankProvince}/${form.value.bankCity}/${form.value.bankRegion}`
+  }
+  return ''
+})
+const onAreaConfirm = ({ selectedOptions }) => {
+  showArea.value = false
+  form.value.bankProvince = selectedOptions[0].name
+  form.value.bankCity = selectedOptions[1].name
+  form.value.bankRegion = selectedOptions[2].name
+}
+
+
 onMounted(async () => {
   const { data } = await getBankApi()
   data ? (form.value = data) : ''

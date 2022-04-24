@@ -42,7 +42,10 @@
         <van-col
           span="11"
           @click="
-            () => router.push('/share/friends?inviteCoe=' + infoData?.inviteCoe)
+            () =>
+              infoData.promotePermission
+                ? router.push('/share/friends?inviteCoe=' + infoData?.inviteCoe)
+                : null
           "
         >
           <img style="width: 100%" src="@/assets/home_friend.png" />
@@ -50,7 +53,10 @@
         <van-col
           span="11"
           @click="
-            () => router.push('/share/friends?inviteCoe=' + infoData?.inviteCoe)
+            () =>
+              infoData.promotePermission
+                ? router.push('/share/friends?inviteCoe=' + infoData?.inviteCoe)
+                : null
           "
         >
           <img style="width: 100%" src="@/assets/home_shangjia.png" />
