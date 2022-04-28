@@ -30,6 +30,7 @@
           }
         ]"
       />
+      <p class="tips">付款多少填多少 自动处理差价 提交不上实付金额在申诉联系客服修改</p>
       <van-field
         v-if="!routeQuery?.screenFlag"
         name="images"
@@ -92,6 +93,12 @@ const onSubmit = async () => {
   padding: 120px 40px 32px;
   .sub {
     padding: 60px 30px;
+  }
+  .tips {
+    font-size: 25px;
+    padding: 20px 30px;
+    color: red;
+    line-height: 1.5;
   }
 }
 </style>

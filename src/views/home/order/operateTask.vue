@@ -48,7 +48,7 @@
         </div>
       </div>
     </div>
-    <h3 style="color:red" v-show="detail.matchingGoods === 1">搭配商品</h3>
+    <h3 style="color:red" v-show="detail.matchingGoods === 1">搭配店铺内以下商品一起加入购物车拍下</h3>
     <van-grid :column-num="3" v-show="detail.matchingGoods === 1">
       <van-grid-item v-for="item in detail.goodsOptionExted" :key="item.id">
         <van-image :src="item.pic1" :width="100" :height="100" />

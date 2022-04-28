@@ -66,7 +66,16 @@
     >
       要求晒图内容
     </div>
-    <div class="tips">
+    <div
+      class="tips"
+      v-show="
+        evalDetail?.pic1 ||
+        evalDetail?.pic2 ||
+        evalDetail?.pic3 ||
+        evalDetail?.pic4 ||
+        evalDetail?.pic5
+      "
+    >
       <van-image
         width="100"
         height="100"
@@ -97,6 +106,10 @@
         v-show="evalDetail?.pic5"
         :src="evalDetail?.pic5"
       />
+    </div>
+    <div class="tips" v-show="evalDetail?.videoUrl">要求晒视频内容</div>
+    <div v-show="evalDetail?.videoUrl" style="height:240px">
+      <video class="voice" controls :src="evalDetail?.videoUrl"/>
     </div>
 
     <h3>评价步骤</h3>
@@ -235,6 +248,12 @@ const copy = async val => {
     padding: 20px 30px;
     color: red;
     line-height: 1.5;
+  }
+  .voice {
+    width: 100%;
+    object-fit: cover;
+    height: 100%;
+    display: block;
   }
   .setp {
     font-size: 26px;
